@@ -10,7 +10,6 @@
 <meta property="og:image" content="https://killian-ssu.github.io/luolou/og.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="a/ear-knot.webp">
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
@@ -248,8 +247,8 @@ footer img{width:160px;margin:0 auto 10px}
 .col{position:relative;background:var(--c);color:#3B2A22;--ink:#3B2A22;--soft:#5E463A;--card:#FFFBF3;--line:rgba(59,42,34,.22);--bg:#FFF6E6;isolation:isolate;padding-top:clamp(64px,8vw,112px)}
 .col::before{content:"";position:absolute;left:0;right:0;top:-22px;height:24px;background:radial-gradient(circle at 24px 24px,var(--c) 23px,transparent 24.5px) 0 0/48px 24px repeat-x;z-index:1}
 .col .pat{position:absolute;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
-.col .pat i{position:absolute;inset:-280px;background:var(--pat) 0 0/280px 280px;animation:drift 38s linear infinite;transform:translateY(calc(var(--py,0) * 1px))}
-@keyframes drift{to{background-position:280px 280px}}
+.col .pat i{position:absolute;inset:-400px;background:var(--pat) 0 0/400px 400px;animation:drift 38s linear infinite;transform:translateY(calc(var(--py,0) * 1px))}
+@keyframes drift{to{background-position:400px 400px}}
 .col .wrap>h2{text-align:center;color:#fff;font-size:clamp(36px,5vw,60px);-webkit-text-stroke:7px #3B2A22;paint-order:stroke fill;text-shadow:0 6px 0 #3B2A22;letter-spacing:.02em}
 .col .wrap>h2::after{content:"";display:block;width:min(320px,60%);margin:18px auto 0;border-top:5px dashed #fff;opacity:.9;-webkit-text-stroke:0}
 .col .wrap>.lede{margin:18px auto 0;text-align:center;color:#3B2A22;font-weight:500;font-size:18px;max-width:34em}
@@ -308,6 +307,41 @@ footer{background:#3B2A22;color:#F2E3D0;border:0}
 .finale .txt{padding-bottom:clamp(40px,6vw,90px)}
 @media(max-width:700px){.finale .wrap{grid-template-columns:minmax(0,1fr);text-align:center}.finale p{margin-inline:auto}}
 
+
+/* 封面：矿车漏漏 —— 插画做主视觉，Logo 在天空留白里，信息收进底部横幅 */
+.hero{min-height:min(96vh,900px);align-items:stretch}
+.hero .bg{background:url(a/cover-cart.webp) 30% 45%/cover}
+.hero::after{display:none}
+.hero .inner{position:absolute;inset:0;display:block;padding:0;max-width:none}
+.hero .logo{position:absolute;left:auto;right:max(4vw,16px);top:2.5%;width:min(300px,21vw);animation:float 5s ease-in-out infinite}
+.hero .ticket{position:absolute;left:0;right:0;bottom:0;width:auto;border:0;border-radius:0;box-shadow:none;background:#FFF8EA;padding:20px max(5vw,16px) 22px;
+  display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"h b" "p b";column-gap:32px;row-gap:2px;align-items:center}
+.hero .ticket::before{content:"";position:absolute;left:0;right:0;top:-22px;height:24px;background:radial-gradient(circle at 24px 24px,#FFF8EA 23px,transparent 24.5px) 0 0/48px 24px repeat-x}
+.hero .ticket .peek{display:block;position:absolute;right:max(5vw,16px);top:-74px;width:96px;animation:peek 4s ease-in-out infinite}
+.hero .ticket h1{grid-area:h;font-size:clamp(26px,2.6vw,38px);color:#3B2A22}
+.hero .ticket p{grid-area:p;margin:0;font-size:16px;max-width:46em}
+.hero .ticket .row{grid-area:b;margin:0;flex-wrap:nowrap}
+.hero .ticket .btn{min-height:52px;font-size:17px;padding:0 26px}
+@media(min-width:1500px){.hero .ticket{padding-inline:calc((100vw - 1240px)/2)}}
+/* 过场：抓爪特写 */
+.cine{position:relative;height:clamp(420px,78vh,760px);overflow:hidden;isolation:isolate;display:flex;align-items:flex-end}
+.cine .cbg{position:absolute;inset:-8% 0;z-index:-1;background:url(a/cover-claw.webp) 60% 40%/cover;will-change:transform}
+.cine::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(59,42,34,.62),rgba(59,42,34,.15) 50%,rgba(59,42,34,0) 70%),linear-gradient(0deg,rgba(59,42,34,.35),rgba(59,42,34,0) 40%)}
+.cine .ct{width:100%;max-width:1240px;margin:0 auto;padding:0 max(5vw,16px) clamp(70px,10vh,110px);color:#fff}
+.cine h2{font-size:clamp(40px,6vw,76px);-webkit-text-stroke:8px #3B2A22;paint-order:stroke fill;text-shadow:0 7px 0 #3B2A22;max-width:9em}
+.cine p{margin-top:14px;font-size:clamp(16px,1.6vw,20px);font-weight:700;max-width:24em;text-shadow:0 2px 8px rgba(59,42,34,.6)}
+@media(max-width:900px){
+ .hero{min-height:100svh}
+ .hero .bg{background-position:26% 40%}
+ .hero .logo{left:auto;right:4%;top:2.5%;width:min(260px,56vw)}
+ .hero .ticket{grid-template-columns:minmax(0,1fr);grid-template-areas:"h" "p" "b";row-gap:8px;padding:18px 16px 22px}
+ .hero .ticket .row{flex-wrap:wrap}
+ .hero .ticket .peek{width:76px;top:-60px}
+ .hero .ticket h1{font-size:24px}.hero .ticket p{font-size:14.5px}
+ .cine .cbg{background-position:68% 40%}
+ .cine h2{-webkit-text-stroke:6px #3B2A22}
+}
+
 @media(max-width:900px){
  .hero .inner,.meet,.mini,.sub2,.loop{grid-template-columns:minmax(0,1fr)}
  .logo{width:min(340px,80%)}
@@ -340,13 +374,13 @@ footer{background:#3B2A22;color:#F2E3D0;border:0}
 </div></nav>
 
 <header class="hero" id="top">
-  <div class="bg" id="heroBg" role="img" aria-label="漏漏娃娃机小岛全景：中央是草莓红娃娃机，旁边是黄色鉴定机，漏漏们在工地、菜园和河边忙碌"></div>
+  <div class="bg" id="heroBg" role="img" aria-label="一只漏漏坐在装满苹果的矿车里冲下轨道，远处是整座小岛：草莓红娃娃机、鉴定机、河流和工地"></div>
   <div class="inner">
     <img class="logo" src="a/title-logo.webp" alt="漏漏娃娃机">
     <div class="ticket">
       <img class="peek" src="a/ear-knot.webp" alt="">
       <h1>在奇幻的娃娃机中探索，搭建你的梦幻世界。</h1>
-      <p>机器里住着一群叫「漏漏」的奇幻生物。夹出木头和花苗，也夹出漏漏；每一只脾气都不一样，读懂它，就知道该让它干什么。</p>
+      <p>机器里住着一群叫「漏漏」的奇幻生物，每一只脾气都不一样。夹出来、读懂它，和它一起把空地盖成家。</p>
       <div class="row"><a class="btn red" href="#play">进岛玩一把</a><a class="btn ghost" href="#mini">试试鉴定机</a></div>
     </div>
   </div>
@@ -358,6 +392,11 @@ footer{background:#3B2A22;color:#F2E3D0;border:0}
     <div class="step"><img src="a/ear-curl.webp" alt=""><div><b>鉴定</b><p>送进鉴定机拍一张照，打印出它的性格报告。</p></div></div>
     <div class="step"><img src="a/cast-act-haul.webp" alt=""><div><b>建造</b><p>按脾气安排岗位，它们干活攒币，你把空地盖成家。</p></div></div>
   </div>
+</section>
+
+<section class="cine" aria-label="过场：抓爪吊起一只漏漏">
+  <div class="cbg" id="cineBg" role="img" aria-label="仰拍视角：抓爪吊起一只圆滚滚的漏漏，吊桥上另一只漏漏惊讶地看着"></div>
+  <div class="ct"><h2>下一只，会是谁？</h2><p>每一次下爪都是开盲盒：可能是一捆木头，也可能是一只抱着爪子不放的漏漏。</p></div>
 </section>
 
 <section class="band col" id="play" data-c="#FFD34A" data-i="#FFDE72" data-e="#F0BC22"><img class="flank l" src="a/cheer-01.webp" alt=""><img class="flank r" src="a/cheer-03.webp" alt="">
@@ -638,7 +677,7 @@ function patURL(ic,ey){
   return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
 }
 document.querySelectorAll(".col").forEach(sec=>{
-  sec.style.setProperty("--c",sec.dataset.c);if(!sec.dataset.i)return;sec.style.setProperty("--pat",patURL(sec.dataset.i,sec.dataset.e));
+  sec.style.setProperty("--c",sec.dataset.c);if(!sec.dataset.i)return;sec.style.setProperty("--pat","url(a/pat-y.png)");
   const p=document.createElement("div");p.className="pat";p.setAttribute("aria-hidden","true");p.innerHTML="<i></i>";sec.prepend(p);
 });
 if(!reduce){
@@ -695,6 +734,7 @@ $("#quiz").addEventListener("submit",e=>{
 /* ===== 首屏视差 ===== */
 const heroBg=$("#heroBg");
 if(!reduce)addEventListener("scroll",()=>{const y=scrollY;if(y<900)heroBg.style.transform=`translateY(${y*.25}px) scale(${1+y*.0002})`},{passive:true});
+const cineBg=$("#cineBg");if(!reduce)addEventListener("scroll",()=>{const r=cineBg.parentElement.getBoundingClientRect();if(r.bottom>0&&r.top<innerHeight)cineBg.style.transform=`translateY(${(r.top*-.12).toFixed(1)}px)`},{passive:true});
 
 /* ===== 游戏 ===== */
 const stage=$("#stage"),cv=$("#cv"),ctx=cv.getContext("2d");

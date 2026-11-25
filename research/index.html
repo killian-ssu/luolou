@@ -35,8 +35,8 @@ p{margin:0}a{color:inherit}
 .band::before{content:"";position:absolute;left:0;right:0;top:-22px;height:24px;background:radial-gradient(circle at 24px 24px,var(--c,var(--bg)) 23px,transparent 24.5px) 0 0/48px 24px repeat-x;z-index:1}
 .band.tint{--c:var(--yt)}.band.y{--c:var(--y)}
 .pat{position:absolute;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
-.pat i{position:absolute;inset:-280px;background:var(--pat) 0 0/280px 280px;animation:drift 40s linear infinite}
-@keyframes drift{to{background-position:280px 280px}}
+.pat i{position:absolute;inset:-400px;background:var(--pat) 0 0/400px 400px;animation:drift 40s linear infinite}
+@keyframes drift{to{background-position:400px 400px}}
 .btn{display:inline-flex;align-items:center;gap:8px;min-height:46px;padding:0 22px;border-radius:999px;border:2.5px solid #3B2A22;background:var(--berry);color:#fff;font-weight:700;text-decoration:none;box-shadow:0 4px 0 #3B2A22;transition:transform .12s}
 .btn:hover{transform:translateY(-2px)}.btn.ghost{background:#fff;color:#3B2A22}
 .note{font-size:13px;color:var(--soft)}
@@ -457,7 +457,7 @@ function patURL(ic,ey){
 }
 
 const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
-document.querySelectorAll(".band[data-i]").forEach(sec=>{sec.style.setProperty("--pat",patURL(sec.dataset.i,sec.dataset.e));const p=document.createElement("div");p.className="pat";p.setAttribute("aria-hidden","true");p.innerHTML="<i></i>";sec.prepend(p)});
+document.querySelectorAll(".band[data-i]").forEach(sec=>{sec.style.setProperty("--pat","url(a/pat-y.png)");const p=document.createElement("div");p.className="pat";p.setAttribute("aria-hidden","true");p.innerHTML="<i></i>";sec.prepend(p)});
 if(!reduce){const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.06});document.querySelectorAll(".reveal").forEach(el=>io.observe(el))}
 else document.querySelectorAll(".reveal").forEach(el=>el.classList.add("in"));
 }
