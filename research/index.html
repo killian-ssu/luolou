@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>漏漏娃娃机 · 前期研究报告</title>
+<meta name="description" content="漏漏娃娃机前期研究：市场、用户、竞品与社交传播研究，以及研究如何落到设计。">
+<meta property="og:title" content="漏漏娃娃机 · 前期研究报告">
+<meta property="og:description" content="市场、用户、竞品与社交传播研究，以及研究如何落到漏漏娃娃机的设计。">
+<meta property="og:image" content="https://killian-ssu.github.io/luolou/og.jpg">
+<link rel="icon" href="a/ear-knot.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/*
+VOICE   专业研究报告的措辞，游戏官网的皮：结论先行，证据完整，不堆砌
+IDEA    一份翻页式汇报：每节是一张带页码的"幻灯片"，标题即结论，底栏写设计启示
+PICTURE 首屏关键数字贴纸；各页分别用交叉赛道图、定位图、参考游戏截图、分类表承担论证
+COLOUR  主题柠檬黄只在封面和传播研究两页铺底纹；其余奶油/浅黄素底，棕字，草莓红强调
+TYPE    站酷快乐体做标题与页码，思源黑体做正文和表格
+*/
+:root{color-scheme:light dark;--bg:#FFF8EA;--ink:#3B2A22;--soft:#6B5244;--line:rgba(59,42,34,.14);--y:#FFD34A;--yt:#FFEFB8;--berry:#E8505B;--mint:#D8F0EE;
+--disp:"ZCOOL KuaiLe","PingFang SC","Microsoft YaHei",sans-serif;--body:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.75 var(--body);overflow-x:clip}
+img{display:block;max-width:100%}
+h1,h2,h3{font-family:var(--disp);font-weight:400;line-height:1.15;margin:0;text-wrap:balance}
+p{margin:0}a{color:inherit}
+:focus-visible{outline:3px solid #4CC3C0;outline-offset:3px;border-radius:8px}
+.wrap{max-width:1200px;margin:0 auto}
+.band{position:relative;padding:clamp(48px,6vw,88px) max(4vw,14px);background:var(--c,var(--bg));isolation:isolate}
+.band::before{content:"";position:absolute;left:0;right:0;top:-22px;height:24px;background:radial-gradient(circle at 24px 24px,var(--c,var(--bg)) 23px,transparent 24.5px) 0 0/48px 24px repeat-x;z-index:1}
+.band.tint{--c:var(--yt)}.band.y{--c:var(--y)}
+.pat{position:absolute;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+.pat i{position:absolute;inset:-280px;background:var(--pat) 0 0/280px 280px;animation:drift 40s linear infinite}
+@keyframes drift{to{background-position:280px 280px}}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:46px;padding:0 22px;border-radius:999px;border:2.5px solid #3B2A22;background:var(--berry);color:#fff;font-weight:700;text-decoration:none;box-shadow:0 4px 0 #3B2A22;transition:transform .12s}
+.btn:hover{transform:translateY(-2px)}.btn.ghost{background:#fff;color:#3B2A22}
+.note{font-size:13px;color:var(--soft)}
+
+/* 导航 */
+.nav{position:sticky;top:0;z-index:30;background:#FFFBF3;border-bottom:3px solid #3B2A22;color:#3B2A22}
+.nav .wrap{display:flex;align-items:center;gap:16px;padding:8px max(4vw,14px);overflow-x:auto;max-width:1260px}
+.nav .brand{display:flex;align-items:center;gap:6px;font-family:var(--disp);font-size:21px;color:var(--berry);text-decoration:none;flex:none}
+.nav .brand img{width:32px;margin:-6px 0}
+.nav a.l{text-decoration:none;font-size:14.5px;flex:none;padding:6px 2px}.nav a.l:hover{color:var(--berry)}
+.nav .btn{margin-left:auto;min-height:36px;padding:0 14px;font-size:14px;flex:none}
+
+/* 封面 */
+.cover .wrap{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:center}
+.cover::before{display:none}
+.cover h1{font-size:clamp(42px,5.8vw,72px);color:#fff;-webkit-text-stroke:8px #3B2A22;paint-order:stroke fill;text-shadow:0 7px 0 #3B2A22}
+.cover .eyebrow{display:inline-flex;align-items:center;gap:8px;background:#fff;border:2.5px solid #3B2A22;border-radius:999px;padding:2px 14px 2px 6px;font-weight:700;margin-bottom:18px}
+.cover .eyebrow img{width:30px}
+.cover .lead{margin-top:20px;font-size:18px;font-weight:500;max-width:30em}
+.meta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:22px}
+.meta div{background:#fff;border:2.5px solid #3B2A22;border-radius:16px;padding:8px 12px;font-size:13.5px;line-height:1.5}
+.meta b{display:block;font-size:12px;color:var(--soft)}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;position:relative}
+.stat{background:#fff;border:3px solid #3B2A22;border-radius:22px;box-shadow:0 5px 0 #3B2A22;padding:16px 18px;transform:rotate(var(--r,0deg))}
+.stat b{display:block;font-family:var(--disp);font-weight:400;font-size:clamp(30px,3.6vw,44px);line-height:1;color:var(--berry)}
+.stat b small{font-size:.5em;color:#3B2A22;margin-left:4px}
+.stat p{margin-top:8px;font-size:14px;line-height:1.55}
+.stat span{display:block;margin-top:6px;font-size:12px;color:var(--soft)}
+.stats .mascot{position:absolute;width:130px;right:-34px;bottom:-78px;animation:bob 3s ease-in-out infinite;z-index:2}
+@keyframes bob{50%{translate:0 -10px}}
+
+/* 目录 */
+.toc{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.toc a{display:block;text-decoration:none;background:#fff;border:3px solid #3B2A22;border-radius:18px;padding:12px 14px;box-shadow:0 4px 0 #3B2A22;transition:transform .15s}
+.toc a:hover{transform:translateY(-3px)}
+.toc b{font-family:var(--disp);font-weight:400;font-size:26px;color:var(--berry);line-height:1}
+.toc span{display:block;font-weight:700;margin-top:4px;font-size:15px}
+.toc small{display:block;color:var(--soft);font-size:12.5px;line-height:1.45;margin-top:2px}
+
+/* 幻灯片 */
+.slide{background:#fff;border:3px solid #3B2A22;border-radius:28px;box-shadow:0 7px 0 #3B2A22;overflow:hidden}
+.sh{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:18px;align-items:center;padding:22px 28px;border-bottom:3px solid #3B2A22;background:var(--yt)}
+.y .sh{background:#fff}
+.sh .pg{font-family:var(--disp);font-size:44px;line-height:1;color:#fff;-webkit-text-stroke:6px #3B2A22;paint-order:stroke fill}
+.sh .tag{font-size:13px;font-weight:700;color:var(--berry)}
+.sh h2{font-size:clamp(24px,2.8vw,34px);margin-top:2px}
+.sh .ic{width:64px}
+.sb{padding:26px 28px}
+.sf{display:flex;gap:14px;align-items:flex-start;padding:16px 28px;background:#3B2A22;color:#FFF3DF}
+.sf b{flex:none;background:var(--y);color:#3B2A22;border-radius:999px;padding:0 12px;font-size:14px;line-height:1.9}
+.sf p{font-size:15.5px}
+.src{padding:10px 28px 14px;font-size:12.5px;color:var(--soft);border-top:1px solid var(--line)}
+.src a{color:var(--soft)}
+.lede{font-size:17px;font-weight:500;margin-bottom:20px;max-width:52em}
+.g2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:start}
+.g2.w{grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr)}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.box{border:2.5px solid #3B2A22;border-radius:18px;padding:16px 18px;background:#FFFBF3}
+.box h3{font-size:19px}
+.box p,.box li{font-size:14.5px;color:var(--soft)}
+.box ul{margin:8px 0 0;padding-left:18px}
+.box.m{background:var(--mint)}.box.k{background:#3B2A22;color:#FFF3DF}.box.k p{color:#FFF3DF}
+.kpi{font-family:var(--disp);font-size:30px;color:var(--berry);line-height:1.1}
+
+/* 表格 */
+.tw{overflow-x:auto;border:2.5px solid #3B2A22;border-radius:18px}
+table{border-collapse:collapse;width:100%;font-size:14.5px;line-height:1.6}
+th{background:var(--y);text-align:left;padding:10px 12px;border-bottom:2.5px solid #3B2A22;white-space:nowrap;font-size:14px}
+td{padding:11px 12px;border-top:1px solid var(--line);vertical-align:top}
+tr:first-child td{border-top:0}
+td:first-child{font-weight:700;white-space:nowrap}
+td.good{color:#2E7D6B}td.bad{color:#B23A44}
+td.ll{background:#FFF6DA;font-weight:500}
+th.ll{background:var(--berry);color:#fff}
+
+/* 图 */
+.venn{max-width:420px;margin:0 auto}
+.map{position:relative;aspect-ratio:1;background:#FFFBF3;border:2.5px solid #3B2A22;border-radius:20px;overflow:hidden}
+.map::before,.map::after{content:"";position:absolute;background:rgba(59,42,34,.25)}
+.map::before{left:50%;top:9%;bottom:9%;width:2px}.map::after{top:50%;left:6%;right:6%;height:2px}
+.map .ax{position:absolute;font-size:12px;color:var(--soft);font-weight:700}
+.map .dot{position:absolute;transform:translate(-50%,-50%);background:var(--yt);border:2px solid #3B2A22;border-radius:999px;padding:0 10px;font-size:12.5px;font-weight:700;white-space:nowrap}
+.map .dot.me{background:var(--berry);color:#fff;font-size:14px;padding:3px 12px;display:flex;gap:6px;align-items:center;box-shadow:0 3px 0 #3B2A22}
+.map .dot.me img{width:26px;margin:-6px 0}
+.map .gap{position:absolute;right:7%;top:9%;width:40%;height:38%;border:3px dashed var(--berry);border-radius:18px}
+.shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:20px}
+.shot img{cursor:zoom-in}
+.lb{position:fixed;inset:0;z-index:50;background:rgba(30,20,15,.86);display:grid;place-items:center;padding:24px}.lb img{max-width:min(1400px,100%);max-height:84vh;border:3px solid #fff;border-radius:12px}.lb p{color:#fff;margin-top:10px;text-align:center}
+.shots:empty,.shots:not(:has(.shot:not([hidden]))){display:none}
+.shot{margin:0;border:2.5px solid #3B2A22;border-radius:16px;overflow:hidden;background:#FFFBF3}
+.shot img{width:100%;aspect-ratio:16/9;object-fit:cover;border-bottom:2.5px solid #3B2A22}
+.shot figcaption{padding:8px 12px;font-size:13px;line-height:1.5}
+.shot figcaption a{color:var(--soft);font-size:12px}
+.persona{position:relative}
+.persona .pet{position:absolute;right:6px;top:-4px;width:96px}
+.persona .tags{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 12px}
+.persona .tags span{background:var(--yt);border:2px solid #3B2A22;border-radius:999px;padding:0 10px;font-size:13px;font-weight:700}
+.persona dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:0;font-size:14.5px}
+.persona dt{font-weight:700}.persona dd{margin:0;color:var(--soft)}
+.mot{display:grid;grid-template-columns:72px minmax(0,1fr);gap:14px;align-items:center}
+.mot img{width:72px}
+.mot .to{display:inline-block;margin-top:6px;font-size:13px;font-weight:700;background:var(--mint);border-radius:999px;padding:0 10px}
+.five{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:22px}
+.five .box b{font-family:var(--disp);font-weight:400;font-size:28px;color:var(--berry);line-height:1}
+.five .box h3{font-size:17px;margin-top:4px}
+.five .box p{font-size:13.5px;margin-top:6px;line-height:1.6}
+.five em{font-style:normal;color:#3B2A22;font-weight:700}
+.map2{display:grid;gap:10px}
+.mrow{display:grid;grid-template-columns:44px minmax(0,1fr) 30px minmax(0,1fr);gap:12px;align-items:center}
+.mrow .n{width:44px;height:44px;border-radius:50%;background:var(--y);border:2.5px solid #3B2A22;display:grid;place-items:center;font-family:var(--disp);font-size:22px}
+.mrow .arr{color:var(--berry);font-weight:700;font-size:22px;text-align:center}
+.mrow .box{padding:10px 14px}.mrow .box h3{font-size:16px;font-family:var(--body);font-weight:700}
+.tl{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;position:relative;margin-bottom:26px}
+.tl::before{content:"";position:absolute;left:8%;right:8%;top:24px;border-top:4px dashed rgba(59,42,34,.28)}
+.stop{position:relative;text-align:center}
+.stop .d{width:48px;height:48px;margin:0 auto;border-radius:50%;background:#fff;border:3px solid #3B2A22;display:grid;place-items:center;font-family:var(--disp);font-size:20px;position:relative}
+.stop.now .d{background:var(--berry);color:#fff}
+.stop .box{margin-top:12px;text-align:left}
+.stop.now .box{background:var(--yt)}
+.stop .why{margin-top:8px;padding-top:8px;border-top:2px dashed var(--line);font-size:13.5px}
+.stop .why b{color:var(--berry)}
+.srcl{columns:2;column-gap:32px;font-size:14px;margin:0;padding-left:18px}
+.srcl li{margin-bottom:6px;break-inside:avoid}
+footer{background:#3B2A22;color:#F2E3D0;text-align:center;padding:36px 16px 48px;font-size:14px}
+footer img{width:150px;margin:0 auto 10px}
+.reveal{opacity:0;translate:0 24px;transition:opacity .6s,translate .6s cubic-bezier(.2,.9,.3,1.2)}
+.reveal.in{opacity:1;translate:0 0}
+@media(max-width:960px){
+ .cover .wrap,.g2,.g2.w{grid-template-columns:minmax(0,1fr)}
+ .g3{grid-template-columns:minmax(0,1fr)}
+ .toc{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .five{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .tl{grid-template-columns:repeat(2,minmax(0,1fr))}.tl::before{display:none}
+ .stats .mascot{display:none}
+}
+@media(max-width:640px){
+ .sh{grid-template-columns:auto minmax(0,1fr);padding:16px 18px}.sh .ic{display:none}.sh .pg{font-size:34px}
+ .sb{padding:18px}.sf,.src{padding-inline:18px}.sf{flex-direction:column;gap:6px}
+ .meta{grid-template-columns:minmax(0,1fr)}
+ .five,.tl{grid-template-columns:minmax(0,1fr)}
+ .mrow{grid-template-columns:36px minmax(0,1fr)}.mrow .arr{display:none}.mrow .box:last-child{grid-column:2}
+ .srcl{columns:1}
+ .cover h1{-webkit-text-stroke:6px #3B2A22}
+ table{min-width:620px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.reveal{opacity:1;translate:0 0}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<nav class="nav" aria-label="页面导航"><div class="wrap">
+  <a class="brand" href="#top"><img src="a/ear-knot.webp" alt="">前期研究</a>
+  <a class="l" href="#s1">概述</a><a class="l" href="#s2">市场</a><a class="l" href="#s3">用户</a><a class="l" href="#s4">竞品</a><a class="l" href="#s5">传播研究</a><a class="l" href="#s8">AI 热点</a><a class="l" href="#s9">研究到设计</a>
+  <a class="btn" href="../">游戏官网</a>
+</div></nav>
+
+<header class="band y cover" id="top" data-i="#FFDE72" data-e="#F0BC22">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow"><img src="a/title-logo.webp" alt="">漏漏娃娃机</span>
+      <h1>前期研究报告</h1>
+      <p class="lead">市场、用户、竞品与社交传播研究。回答三个问题：这个赛道在为什么买单，核心玩家要什么，同类游戏里的玩家在分享什么；以及这些结论如何落到漏漏娃娃机的设计上。</p>
+      <div class="meta"><div><b>研究时间</b>2026 年 11 月</div><div><b>研究方法</b>桌面研究、竞品拆解、社交内容分析</div><div><b>覆盖范围</b>生活模拟、UGC + AI、AI 陪伴</div></div>
+    </div>
+    <div class="stats">
+      <div class="stat" style="--r:-1.5deg"><b>500<small>万份</small></b><p>《Pokémon Pokopia》发售 5 个月销量；首发 4 天卖出 220 万份</p><span>治愈系生活模拟</span></div>
+      <div class="stat" style="--r:1.2deg"><b>−9%<small>日活同比</small></b><p>Roblox 2026 Q3 日活 1.38 亿；同期 AI 生成工具发布 7 万多款游戏</p><span>UGC + AI 创作</span></div>
+      <div class="stat" style="--r:1deg"><b>No.1<small>收入榜</small></b><p>猫箱 2026 Q1 中国 iOS 生成式 AI 收入榜第一，人均日用 14.8 分钟</p><span>AI 陪伴</span></div>
+      <div class="stat" style="--r:-1deg"><b>4<small>倍</small></b><p>猫箱单用户变现效率约为星野、筑梦岛的 4 倍</p><span>AI 陪伴</span></div>
+      <img class="mascot" src="a/type-05.webp" alt="">
+    </div>
+  </div>
+</header>
+
+<section class="band" aria-label="目录">
+  <div class="wrap"><div class="toc" id="toc"></div></div>
+</section>
+
+<section class="band tint" id="s1"><div class="wrap"><article class="slide reveal">
+  <header class="sh"><span class="pg">01</span><div><p class="tag">研究概述</p><h2>最值得做的小世界：让 AI 角色产出可展示的内容，并用它把熟人拉进来</h2></div><img class="ic" src="a/ear-curl.webp" alt=""></header>
+  <div class="sb">
+    <div class="g3">
+      <div class="box"><h3>研究问题</h3><ul><li>相邻赛道验证了什么需求，AI 在其中的真实价值在哪</li><li>核心玩家是谁，为什么玩，和谁玩</li><li>同类游戏的玩家在社交平台上分享什么、为什么分享</li></ul></div>
+      <div class="box"><h3>研究方法</h3><ul><li>桌面研究：行业数据、财报、媒体报道</li><li>竞品拆解：核心体验、社交与传播设计</li><li>内容分析：动森、Pokopia、《朋友收集》新作的玩家分享内容</li></ul></div>
+      <div class="box m"><h3>研究局限</h3><ul><li>以二手资料为主，没有做一手访谈和问卷</li><li>部分玩家画像数据来自二手汇编，只作方向参考</li><li>MagiScapes 等未发售产品的效果尚未验证</li></ul></div>
+    </div>
+    <h3 style="font-size:22px;margin:26px 0 12px">核心结论</h3>
+    <div class="tw"><table><thead><tr><th>#</th><th>结论</th><th>依据</th></tr></thead><tbody id="sumRows"></tbody></table></div>
+  </div>
+  <div class="sf"><b>设计启示</b><p>小世界围绕「角色会产出内容」这一核心机制设计：玩家负责输入和选择，AI 负责把每个角色写成独一份，好友通过这份内容被拉进来。</p></div>
+</article></div></section>
+
+<section class="band" id="s2"><div class="wrap"><article class="slide reveal">
+  <header class="sh"><span class="pg">02</span><div><p class="tag">市场研究</p><h2>三个相邻赛道都在验证：内容和情绪体验才是护城河，AI 生成本身不是</h2></div><img class="ic" src="a/res-coin.webp" alt=""></header>
+  <div class="sb g2 w">
+    <div>
+      <svg class="venn" viewBox="0 0 400 400" role="img" aria-label="三圆交叉图：生活模拟提供玩法框架，UGC 提供传播和创作，AI 陪伴提供情绪和付费，交叉处是 AI 小世界">
+        <circle cx="200" cy="140" r="110" fill="#FFD34A" fill-opacity=".6" stroke="#3B2A22" stroke-width="3"/>
+        <circle cx="135" cy="250" r="110" fill="#8CCFEF" fill-opacity=".5" stroke="#3B2A22" stroke-width="3"/>
+        <circle cx="265" cy="250" r="110" fill="#F48A97" fill-opacity=".5" stroke="#3B2A22" stroke-width="3"/>
+        <g fill="#3B2A22" text-anchor="middle" font-family="Noto Sans SC, sans-serif"><text x="200" y="78" font-size="22" font-family="ZCOOL KuaiLe, Noto Sans SC, sans-serif">生活模拟</text><text x="200" y="100" font-size="13">玩法框架</text><text x="86" y="292" font-size="22" font-family="ZCOOL KuaiLe, Noto Sans SC, sans-serif">UGC</text><text x="86" y="313" font-size="13">传播与创作</text><text x="314" y="292" font-size="22" font-family="ZCOOL KuaiLe, Noto Sans SC, sans-serif">AI 陪伴</text><text x="314" y="313" font-size="13">情绪与付费</text></g>
+        <circle cx="200" cy="215" r="40" fill="#FFF8EA" stroke="#3B2A22" stroke-width="3"/><image href="a/ear-curl.webp" x="172" y="186" width="56" height="52"/>
+      </svg>
+      <div class="box k" style="margin-top:14px"><p><b style="color:#FFD34A">判断：</b>「AI 小世界」处在三个赛道的交叉点。机会在于把三者合进一个可以分享的小世界；风险是 Roblox 式的内容过剩，以及 AI 陪伴的同质化。</p></div>
+    </div>
+    <div class="tw"><table><thead><tr><th>赛道</th><th>关键数据</th><th>对本题的意义</th></tr></thead><tbody id="mktRows"></tbody></table></div>
+  </div>
+  <div class="sf"><b>设计启示</b><p>沿用被验证的「和伙伴一起建世界」框架，不另造玩法；AI 不负责生成世界，只负责让每一只漏漏有独一份的性格文案。</p></div>
+  <p class="src">来源：VGC、games.gg（Pokopia 销量）；MediaPost、VGTimes（Roblox）；虎嗅（猫箱）。</p>
+</article></div></section>
+
+<section class="band tint" id="s3"><div class="wrap"><article class="slide reveal">
+  <header class="sh"><span class="pg">03</span><div><p class="tag">用户研究</p><h2>核心用户要的是解压和自我表达，并且更愿意和熟人一起玩</h2></div><img class="ic" src="a/type-16.webp" alt=""></header>
+  <div class="sb">
+    <div class="tw"><table><thead><tr><th>维度</th><th>发现</th><th>来源</th></tr></thead><tbody id="userRows"></tbody></table></div>
+    <p class="note" style="margin-top:8px">注：VoxBooster 为二手汇编，具体百分比只作方向参考。</p>
+    <div class="g2" style="margin-top:22px">
+      <div class="box persona"><img class="pet" src="a/cheer-01.webp" alt=""><h3>核心玩家画像</h3><div class="tags"><span>18–34 岁</span><span>女性为主</span><span>治愈向</span><span>熟人社交</span></div>
+        <dl><dt>动机</dt><dd>放松、躲避日常压力，主动回避高强度战斗</dd><dt>社交</dt><dd>只和认识的人玩，避免语音，回避陌生人联机</dd><dt>付费</dt><dd>愿意为自己养的「崽」持续投入时间和金钱</dd><dt>偏好</dt><dd>异步、低压力、能表达自己</dd></dl></div>
+      <div style="display:grid;gap:12px" id="motives"></div>
+    </div>
+  </div>
+  <div class="sf"><b>设计启示</b><p>传播点最好同时触发「晒作品」和「拉熟人」；互动以异步、低压力、熟人之间为主，不设计陌生人实时竞争。漏漏的「夹」也因此做成轻松、几乎不会失败的操作。</p></div>
+</article></div></section>
+
+<section class="band" id="s4"><div class="wrap"><article class="slide reveal">
+  <header class="sh"><span class="pg">04</span><div><p class="tag">竞品分析</p><h2>传统竞品赢在「有灵魂」，AI 原生竞品赢在「人人能造」，还没有产品把两者和「可传播」结合好</h2></div><img class="ic" src="a/type-13.webp" alt=""></header>
+  <div class="sb">
+    <div class="tw"><table><thead><tr><th>产品</th><th>核心体验</th><th>传播 / 社交设计</th><th>可借鉴</th><th>短板</th></tr></thead><tbody id="compRows"></tbody></table></div>
+    <div class="g2 w" style="margin-top:22px;align-items:center">
+      <div class="map" role="img" aria-label="竞品定位图：横轴为角色个性从预制到 AI 生成，纵轴为分享与社交从弱到强；右上空位为漏漏娃娃机">
+        <div class="gap"></div>
+        <span class="ax" style="left:50%;top:2%;transform:translateX(-50%)">分享与社交强</span><span class="ax" style="left:50%;bottom:2%;transform:translateX(-50%)">分享与社交弱</span>
+        <span class="ax" style="left:3%;top:52%">角色预制</span><span class="ax" style="right:3%;top:52%">角色 AI 生成</span>
+        <span class="dot" style="left:27%;top:24%">动物森友会</span><span class="dot" style="left:31%;top:37%">Pokopia</span><span class="dot" style="left:22%;top:63%">朋友收集</span><span class="dot" style="left:45%;top:73%">Roblox</span><span class="dot" style="left:78%;top:64%">猫箱</span><span class="dot" style="left:74%;top:82%">Voyage</span><span class="dot" style="left:63%;top:44%">MagiScapes</span>
+        <span class="dot me" style="left:73%;top:24%"><img src="a/ear-knot.webp" alt="">漏漏娃娃机</span>
+      </div>
+      <div class="box m"><h3>空位</h3><p style="margin-top:6px">动森的可展示空间 + 猫箱的有灵魂角色 + Pokopia 的异步共建，再加一个能产出可分享内容的 Mini App。</p><p style="margin-top:10px;color:#3B2A22"><b>漏漏娃娃机的对应：</b>用「岛」承担空间，用「16 型漏漏 + AI 写的鉴定报告」承担灵魂，用「报告卡 + 朋友盖章」承担分享。</p><p class="note" style="margin-top:10px">定位图为定性判断，用于说明空位，不是量化评分。</p></div>
+    </div>
+    <div class="shots" data-shots="ref-pokopia-build|Pokopia：宝可梦参与建造|https://www.pocoapokemon.jp/sc/howtoplay/260522_04/;ref-maoxiang|猫箱：和 AI 角色的对话|https://apps.apple.com/cn/app/id6475000292?platform=iphone;ref-magiscapes|MagiScapes（麦琪的花园）：AI 伙伴与营地|https://store.steampowered.com/app/2990190/Magiscapes/?l=schinese"></div>
+  </div>
+  <div class="sf"><b>设计启示</b><p>不在「AI 能生成多少」上竞争，而是占住右上角：角色由 AI 写出个性，产出的东西天然适合分享。</p></div>
+  <p class="src">来源：Nintendo Life（Pokopia 联机）、动森官网、MediaPost、虎嗅、Steam、TechCrunch。</p>
+</article></div></section>
+
+<section class="band y" id="s5" data-i="#FFDE72" data-e="#F0BC22"><div class="wrap"><article class="slide reveal">
+  <header class="sh"><span class="pg">05</span><div><p class="tag">社交传播研究 · 动物森友会</p><h2>玩家分享的是「作品」和「小动物的性格」</h2></div><img class="ic" src="a/cheer-02.webp" alt=""></header>
+  <div class="sb">
+    <p class="lede">动森的传播内容分两大类：建造和设计作品，偏审美、偏小红书；荒诞、可吐槽的瞬间，偏梗、偏短视频。任天堂曾表示，社交媒体口碑帮动森很快达到了预期的生命周期销量。</p>
+    <div class="tw"><table><thead><tr><th>内容</th><th>是什么</th><th>典型平台</th></tr></thead><tbody id="acRows"></tbody></table></div>
+    <div class="shots" data-shots="ref-acnh-island|岛屿造景：节日主题布置|https://www.nintendo.com/tw/topics/article/a_210924_03.html;ref-acnh-design|我的设计：作品卡与设计码|https://www.nintendo.com/tw/topics/article/2PkC26AYCPL04EIoKQLuLR;ref-acnh-dream|梦境门牌号：用一串码游览别人的岛|https://www.nintendo.com/tw/topics/article/a_201117_02.html"></div>
+  </div>
+  <div class="sf"><b>设计启示</b><p>「村民的性格」是很强的内容来源，但动森村民台词固定、会重复。漏漏的性格报告由 AI 现写，每一只都能产生新内容。</p></div>
+  <p class="src">来源：Siliconera、Nintendo Life、Game Informer、什么值得买、机核。</p>
+</article></div></section>
+
+<section class="band tint" id="s6"><div class="wrap"><article class="slide reveal">
+  <header class="sh"><span class="pg">06</span><div><p class="tag">社交传播研究 · Pokopia 与《朋友收集》新作</p><h2>角色越「神经」，越容易病毒传播；使唤萌宠本身就是笑点</h2></div><img class="ic" src="a/type-04.webp" alt=""></header>
+  <div class="sb g2">
+    <div><h3 style="font-size:22px">Pokopia：离谱建筑与「宝可梦血汗工厂」</h3><p class="note" style="margin:4px 0 12px">在动森基础上多了一类内容：使唤宝可梦干活的离谱场面。</p>
+      <div class="tw"><table><thead><tr><th>内容</th><th>是什么</th></tr></thead><tbody id="pkRows"></tbody></table></div>
+      <div class="shots" data-shots="ref-pokopia-factory|玩家建的「宝可梦工厂」（Kotaku 报道的玩家视频截帧）|https://kotaku.com/pokemon-pokopia-factory-sweatshop-prison-jail-labor-2000679679;ref-pokopia-cloud|云岛：好友一起上岛建造|https://www.nintendo.com/us/whatsnew/heres-how-multiplayer-works-in-pokemon-pokopia/"></div>
+    </div>
+    <div><h3 style="font-size:22px">《朋友收集 梦想生活》：最强搞笑片段生成器</h3><p class="note" style="margin:4px 0 12px">2026 年 4 月发售，和漏漏娃娃机最接近的参照：放入角色，围观它们之间的荒诞对话。</p>
+      <div class="box"><ul style="margin:0">
+        <li><b style="color:#3B2A22">传播的内容：</b>角色之间离谱的对话、关系和「肥皂剧」，任天堂也顺势宣传这种戏剧性和傻气。</li>
+        <li><b style="color:#3B2A22">为什么传得快：</b>每个人的岛都不一样，发生的事也不一样；片段短、反差强，天然适合短视频。</li>
+        <li><b style="color:#3B2A22">反面教训：</b>禁用截图上传，玩家只能用手机对着屏幕拍；评测认为缺少社交功能让它浪费了爆红的机会。</li>
+      </ul></div>
+      <div class="shots" data-shots="ref-tomodachi-island|岛上的 Mii 居民|https://ec.nintendo.com/HK/zh/titles/70010000116666;ref-tomodachi-drama|Mii 之间的离谱对话|https://www.videogameschronicle.com/review/tomodachi-life-living-the-dream-review/"></div>
+    </div>
+  </div>
+  <div class="sf"><b>设计启示</b><p>把「使唤萌宠」从玩家自发的梗变成设计好的体验：漏漏按性格上岗，有的勤快有的摸鱼；离谱的被夹反应直接写进报告卡，一键就能分享。</p></div>
+  <p class="src">来源：Daily Dot、Kotaku、PC Gamer、TechRadar、GamesRadar、Game Informer、VGC。</p>
+</article></div></section>
+
+<section class="band" id="s7"><div class="wrap"><article class="slide reveal">
+  <header class="sh"><span class="pg">07</span><div><p class="tag">社交传播研究 · 归纳</p><h2>六类分享内容，以及漏漏娃娃机怎么接住它们</h2></div><img class="ic" src="a/cheer-03.webp" alt=""></header>
+  <div class="sb">
+    <div class="tw"><table><thead><tr><th>类型</th><th>例子</th><th>玩家为什么发</th><th class="ll">漏漏娃娃机怎么接</th></tr></thead><tbody id="clsRows"></tbody></table></div>
+    <div class="five" id="five"></div>
+  </div>
+  <div class="sf"><b>设计启示</b><p>同类游戏的分享内容主要有两类：晒作品，和晒角色的离谱瞬间。今年两个爆款说明第二类越来越重要，所以漏漏娃娃机把「鉴定报告卡」作为最主要的分享物。</p></div>
+</article></div></section>
+
+<section class="band tint" id="s8"><div class="wrap"><article class="slide reveal">
+  <header class="sh"><span class="pg">08</span><div><p class="tag">AI 热点与开源参考</p><h2>轻量的 AI 角色也能产生强依恋，「一本正经地给角色下结论」本身就是内容</h2></div><img class="ic" src="a/claw-open.webp" alt=""></header>
+  <div class="sb">
+    <div class="tw"><table><thead><tr><th>参考</th><th>是什么</th><th>可借鉴的点</th><th class="ll">在漏漏娃娃机中</th></tr></thead><tbody id="aiRows"></tbody></table></div>
+    <div class="shots" data-shots="ref-moltbook|Moltbook：AI agent 专属社交网络首页|https://www.moltbook.com/;ref-aitown|AI Town：AI 居民在小镇里对话|https://github.com/a16z-infra/ai-town#readme"></div>
+  </div>
+  <div class="sf"><b>设计启示</b><p>AI 的职责要小而确定：规则决定 16 型（保证收集和一致性），AI 只写标签和鉴定结论（保证每张都独一份），不在时由本地词库兜底。</p></div>
+</article></div></section>
+
+<section class="band" id="s9"><div class="wrap"><article class="slide reveal">
+  <header class="sh"><span class="pg">09</span><div><p class="tag">从研究到设计</p><h2>方向如何一步步收拢到漏漏娃娃机</h2></div><img class="ic" src="a/cheer-04.webp" alt=""></header>
+  <div class="sb">
+    <div class="tl" id="tl"></div>
+    <h3 style="font-size:22px;margin-bottom:12px">研究发现 → 设计决定</h3>
+    <div class="map2" id="map2"></div>
+  </div>
+  <div class="sf"><b>取舍原则</b><p>两天的笔试，招聘方要看的是一个想清楚的核心和可运行的 MVP，而不是功能堆砌。研究给方向，取舍从招聘方视角出发。</p></div>
+</article></div></section>
+
+<section class="band tint" id="s10"><div class="wrap"><article class="slide">
+  <header class="sh"><span class="pg">10</span><div><p class="tag">附录</p><h2>资料来源</h2></div></header>
+  <div class="sb"><ul class="srcl" id="src"></ul></div>
+</article></div></section>
+
+<footer><img src="a/title-logo.webp" alt="">漏漏娃娃机 · 前期研究报告<br><a href="../" style="color:#FFD34A">回到游戏官网 →</a></footer>
+
+<script>
+{
+const $=s=>document.querySelector(s);
+const rows=(id,data,cls)=>{$(id).innerHTML=data.map(r=>`<tr>${r.map((c,i)=>`<td${cls&&cls[i]?` class="${cls[i]}"`:""}>${c}</td>`).join("")}</tr>`).join("")};
+const TOC=[["01","研究概述","问题、方法与核心结论","#s1"],["02","市场","三条赛道的交叉点","#s2"],["03","用户","解压、表达、熟人社交","#s3"],["04","竞品","有灵魂 × 可传播的空位","#s4"],["05","传播 · 动森","作品与小动物的性格","#s5"],["06","传播 · 新作","神经角色与使唤萌宠","#s6"],["07","分享归纳","六类内容与接法","#s7"],["08","AI 热点","开源项目与网络热梗","#s8"],["09","研究到设计","方向演进与决定","#s9"],["10","来源","26 条资料","#s10"]];
+$("#toc").innerHTML=TOC.map(t=>`<a href="${t[3]}"><b>${t[0]}</b><span>${t[1]}</span><small>${t[2]}</small></a>`).join("");
+
+rows("#sumRows",[
+ ["1","<b>需求已被验证</b>：「和伙伴一起建世界」有大众市场","Pokopia 5 个月 500 万份，约 21% 的 Switch 2 玩家购买"],
+ ["2","<b>AI 生成不是壁垒</b>：要解决的是为什么会被分享、被回访","Roblox AI 工具产出 7 万多款游戏，日活同比 −9%"],
+ ["3","<b>角色有灵魂才付费</b>：角色和 NPC 是商业价值的载体","猫箱靠有趣的角色和故事登顶收入榜"],
+ ["4","<b>用户要解压和熟人社交</b>：偏好异步、低压力互动","核心用户偏年轻女性，回避竞争和陌生人"],
+ ["5","<b>分享的重心在转向角色</b>：离谱瞬间比作品传得更快","《朋友收集》新作刷屏短视频；Pokopia「血汗工厂」梗"]]);
+
+rows("#mktRows",[
+ ["治愈系生活模拟","《Pokopia》2026 年 3 月发售，4 天卖出 220 万份（日本 100 万）；5 个月破 500 万，约 21% 的 Switch 2 玩家买了它","「和宝可梦一起建世界、一起生活」的需求被验证，且跨出了核心粉丝圈"],
+ ["UGC 平台 + AI 创作","Roblox Q3 2026 日活 1.38 亿，同比 −9%；AI 生成工具内测以来 50 万人使用、发布 7 万多款游戏；Top 100 作品中 80% 以上用过 AI 工具","AI 让「人人能造」成立，但内容爆炸后，<b>发现和分享</b>变成新瓶颈，日活并未因此增长"],
+ ["AI 陪伴","猫箱 2026 Q1 位列中国 iOS 生成式 AI 收入榜第一，人均日使用 14.8 分钟，高于豆包；单用户变现效率约为星野、筑梦岛的 4 倍","赢的不是模型能力，而是「虚拟角色有趣 + 故事好」，验证了角色承载情绪价值的商业路径"]]);
+
+rows("#userRows",[
+ ["性别","cozy 游戏玩家约 62% 为女性/非二元；13–39 岁女性中 75% 喜欢 cozy 游戏","VoxBooster 汇编（转引 Circana）、YPulse"],
+ ["年龄","约 54% 为 18–34 岁，平均约 28.5 岁","VoxBooster 汇编"],
+ ["动机","44% 的美国玩家为放松而玩，41% 为躲避日常压力；约 68% 主动回避高强度战斗","Goomba Stomp（转引 Sago）、VoxBooster"],
+ ["社交方式","很多女性玩家只和认识的人玩、避免语音，甚至回避陌生人联机","Bryter 女性玩家调研"],
+ ["AI 陪伴付费","猫箱用户愿意为自己养的「崽」持续投入时间和金钱，沉没成本让他们不愿离开","虎嗅"]]);
+
+$("#motives").innerHTML=[["type-01","晒作品","动森岛屿设计在微博、小红书大量传播。分享的是「我的审美和心血」。","→ 开局空地与建成小岛对比"],["type-09","晒关系","AI 陪伴用户分享角色说的话、和角色的故事。分享的是「它懂我」。","→ 每只漏漏的鉴定报告"],["type-02","拉人一起","Pokopia 云岛屿、动森互访。分享的是「来我这儿玩」，偏熟人小圈子。","→ 朋友盖章、测测你是哪一型"]].map(m=>`<div class="box mot"><img src="a/${m[0]}.webp" alt=""><div><h3>${m[1]}</h3><p>${m[2]}</p><span class="to">${m[3]}</span></div></div>`).join("");
+
+rows("#compRows",[
+ ["宝可梦 Pokopia","和宝可梦一起重建世界、生活；宝可梦有技能，参与建造","云岛屿：岛主离线时好友仍可进入建造，最多 4 人；9 位地址码分享","「异步共建」和「一串码就能进来」的低门槛邀请","内容都是预制的，宝可梦没有真正的个性和对话"],
+ ["动物森友会","把荒岛建成自己的岛，实时时间、小动物邻居","岛屿设计、服装图案、拍照在社交媒体自发传播；岛主必须在线才能互访","「自我表达」是最强传播点；实时时间带来每日回访","小动物对话重复，中后期缺少新内容"],
+ ["朋友收集 新作","放入角色，围观它们之间的对话和关系","角色离谱片段在短视频平台刷屏","神经角色是最强的内容来源","禁用截图上传，社交功能弱"],
+ ["Roblox","平台，玩家自己做游戏给别人玩","经济系统和创作者分成；用文字即可生成游戏","AI 降低创作门槛；作品可被游玩并产生收入","内容过剩、同质化，Q3 日活同比 −9%"],
+ ["猫箱","和 AI 角色聊天、参与互动故事","用户创建并分享自己的角色","角色个性 + 故事是付费核心","只有对话框，没有空间和世界"],
+ ["MagiScapes","沙盒冒险，和自定义 AI 伙伴一起建营地","每个 AI 伙伴有唯一码，好友导入即可得到同一个伙伴","「分享一个角色」而不是分享截图","尚未发售，效果未验证"],
+ ["Voyage","用 AI 创建世界和持久角色的 RPG 平台","公测期已有 16 万多个 AI 生成角色","世界 + 角色都由用户生成","偏文字 RPG，视觉和轻量社交弱"]],[0,0,0,"good","bad"]);
+
+rows("#acRows",[
+ ["岛屿 / 房间造景","按风格分享的岛屿和室内设计，常附家具清单、占地格数、设计码，如「中式小院」「对称强迫症岛」","小红书、Instagram、Pinterest"],
+ ["自定义设计码","玩家自己画的衣服、地面、海报；一串码就能下载","Twitter、小红书、Reddit"],
+ ["梦境地址","分享一串码，别人就能「游览」你的岛；明星也会发","各平台 + 攻略站分享板"],
+ ["村民梗","对特定村民的喜爱和吐槽，如追人气村民、给村民做主题账号","Twitter、TikTok、贴吧"],
+ ["游戏机制吐槽","还不完的房贷、大头菜价格、各种荒诞瞬间","短视频、表情包"],
+ ["和朋友的互动","帮朋友浇花、互寄礼物、上岛来访的温情小故事","长文社区（如机核）"]]);
+
+rows("#pkRows",[
+ ["梗和对话截图","设定本身就怪，玩家大量分享梗图、对话截图；能和宝可梦对话让它们多了个性"],
+ ["神作建筑","巨型雕像、自动农场、还原经典场景；有人花 260 小时建地下赛博城"],
+ ["宝可梦「血汗工厂」","建工厂让宝可梦辛苦干活产资源，很多只是为了发社交媒体的视觉笑点"],
+ ["温暖小镇和角色故事","小镇快照、安静的游戏片段、意外温情的角色故事"],
+ ["云岛屿地址","用一串码邀请朋友上岛一起建"]]);
+
+rows("#clsRows",[
+ ["离谱角色瞬间","《朋友收集》对话片段、Pokopia 对话截图","好笑，可以接梗","被夹时「装死」「抱着爪子不放」写进报告卡"],
+ ["使唤萌宠","Pokopia「血汗工厂」","反差、自嘲","漏漏按性格上岗攒币，人形抱枕负责睡觉"],
+ ["建造神作","动森造景、Pokopia 巨型建筑","展示审美和心血","开局空地与建成对比：「我家漏漏盖成了这样」"],
+ ["角色追宠","动森人气村民、村民主题账号","喜欢、归属感","16 型图鉴，「我的第一只卷卷耳」"],
+ ["分享码 / 地址","梦境地址、设计码、云岛屿","让别人来看、来玩","报告卡分享文案、朋友盖章、测测你是哪一型"],
+ ["机制吐槽","还不完的房贷、大头菜价格","共鸣","「投了 12 枚娃娃币还没夹到卷卷耳」"]],[0,0,0,"ll"]);
+
+$("#five").innerHTML=[["角色越神经，传得越快","漏漏被夹时会<em>装死、转圈、抱着爪子不放</em>。"],["使唤萌宠是笑点","按脾气<em>上岗攒币</em>，有的勤快有的摸鱼。"],["晒作品是长尾","<em>开局空地到建成小岛</em>的对比。"],["分享必须顺手","鉴定完<em>直接打印报告卡</em>。"],["一串码是最低门槛","朋友<em>盖章</em>、<em>测自己是哪一型</em>，不用装游戏。"]].map((f,i)=>`<div class="box"><b>${i+1}</b><h3>${f[0]}</h3><p>${f[1]}</p></div>`).join("");
+
+rows("#aiRows",[
+ ["Moltbook","2026 年 1 月上线的 AI agent 专属社交网络，人类只能围观，几天内涌入约 150 万个 agent","「看 AI 自己社交」本身就是奇观和话题","暂未采用：多智能体社交成本高，留作后续「漏漏串门」"],
+ ["AI Town / MiroFish","开源多智能体模拟：AI 角色在小镇里生活、聊天；MiroFish 2026 年 3 月登上 GitHub 趋势榜第一","你离线时世界也在发生事","简化为规则驱动：漏漏离线时也在岛上干活攒币"],
+ ["Buddy","Claude Code 的 /buddy 宠物下线后，社区复刻的开源版本；首周孵化 1000 多只","极轻量的宠物也能产生强依恋","一张立绘 + 一份报告，就足以让玩家认领一只漏漏"],
+ ["Meta Waddle World","2026 年 10 月上线的 AI 宠物 App，每周总结它了解到的你","「宠物眼中的你」可以变成定期产出的内容","「测测你是哪一型」：人类也能拿到一张报告"],
+ ["MagiScapes","每个 AI 伙伴有唯一 ID 码，好友导入就能得到同一个伙伴","分享的对象是一个活的角色","分享的是「这一只」的报告卡，而不是一张截图"],
+ ["萝卜纸巾猫","2025 年末抖音热梗，三花猫在萝卜和纸巾之间「蒙题」，播放量超 12 亿","宠物一本正经地「答题、表现」可模仿、可二创","鉴定机一本正经地给漏漏下结论"],
+ ["小红书年度热词","千瓜总结的 2025 年热词：抽象力、活人感、AI 人格、边界感","内容要有梗、有活人感、能自嘲","报告文案的语气：一本正经，但有点好笑"]],[0,0,0,"ll"]);
+
+$("#tl").innerHTML=[["1","神宠夜市","神宠摆摊，好友来逛","最符合竞品空位，但「为什么天天来」不够强",""],["2","崽崽社交圈","神宠去好友小镇串门，人类围观","传播点好，但多智能体社交太重，两天讲不清",""],["3","兔子岛","抓野兔帮你建岛，鉴定机出性格报告","报告卡成立；但「抓」太有对抗性，也要解释兔子从哪来",""],["4","漏漏娃娃机","奇幻娃娃机里住着漏漏，夹出来、读懂它、一起建岛","娃娃机让「夹」自然又轻松；单一物种更好做 IP；世界观一句话讲完","now"]].map(t=>`<div class="stop ${t[4]}"><div class="d">${t[0]}</div><div class="box"><h3>${t[1]}</h3><p>${t[2]}</p><p class="why"><b>${t[4]?"为什么定下：":"为什么放下："}</b>${t[3]}</p></div></div>`).join("");
+
+$("#map2").innerHTML=[["需求已被验证","岛 + 伙伴 + 建造：沿用被验证的框架"],["AI 生成不是壁垒","AI 只写「这一只」：类型由规则决定，文案由 AI 现写"],["角色有灵魂才付费","16 型漏漏：耳朵定性格，表情定状态"],["角色越神经，传得越快","被夹时的反应进入报告卡"],["分享必须顺手","鉴定机直接出卡：保存、复制、盖章、测一测"]].map((m,i)=>`<div class="mrow"><span class="n">${i+1}</span><div class="box"><h3>${m[0]}</h3></div><span class="arr" aria-hidden="true">→</span><div class="box m"><h3>${m[1]}</h3></div></div>`).join("");
+
+const SR=[["VGC：Pokopia 首发 4 天销量","https://www.videogameschronicle.com/news/pokopia-is-already-one-of-the-best-selling-pokemon-spin-offs-after-just-four-days"],["games.gg：Pokopia 500 万份","https://games.gg/news/pokemon-pokopia-nintendo-switch-2-sales/"],["MediaPost：Roblox 2026 Q3","https://www.mediapost.com/publications/article/419134/q3-roblox-boosts-revenue-bets-on-ai-game-creatio.html"],["VGTimes：Roblox AI 工具","https://vgtimes.com/articles/173979-roblox-ai-build-tool-games-daily-users.html"],["虎嗅：猫箱变现效率","https://www.huxiu.com/article/4899267.html"],["虎嗅：猫箱收入榜","https://www.huxiu.com/article/4901472.html"],["虎嗅：AI 陪伴用户投入","https://www.huxiu.com/article/4898877.html"],["VoxBooster：cozy 游戏数据汇编","https://voxbooster.com/blog/cozy-games-statistics-2026"],["YPulse：cozy 游戏与年轻玩家","https://www.ypulse.com/newsfeed/2025/04/07/cozy-gaming-is-truly-benefitting-young-players-mental-health/"],["Bryter：女性玩家调研","https://www.bryter-global.com/blog/female-gamers-survey-2024"],["Nintendo Life：Pokopia 联机","https://nintendolife.com/guides/pokemon-pokopia-multiplayer-guide-how-to-play-with-friends"],["Steam：MagiScapes","https://store.steampowered.com/app/2990190"],["TechCrunch：Voyage","https://techcrunch.com/2026/04/21/voyage-is-an-ai-rpg-platform-for-creating-custom-gaming-worlds-with-ai-generated-npc-interactions"],["36氪：萝卜纸巾猫","https://www.36kr.com/p/3626312061830402"],["Siliconera：动森靠社交口碑达到预期销量","https://siliconera.com/?p=835656"],["Nintendo Life：动森如何占领社交媒体","https://www.nintendolife.com/news/2020/01/feature_how_animal_crossing_invaded_social_media"],["Game Informer：动森玩家自定义设计","https://gameinformer.com/2020/04/02/a-growing-list-of-the-best-fan-designs-in-animal-crossing-new-horizons"],["机核：动森好友互动的故事","https://www.gcores.com/articles/149028"],["Daily Dot：Pokopia 梗图","https://dailydot.com/pokemon-pokopia-memes"],["Kotaku：Pokopia 为何大受欢迎","https://kotaku.com/pokemon-pokopia-switch-2-sales-memes-player-creation-2000685499"],["Kotaku：Pokopia「血汗工厂」","https://kotaku.com/pokemon-pokopia-factory-sweatshop-prison-jail-labor-2000679679"],["PC Gamer：Pokopia 260 小时地下城","https://www.pcgamer.com/games/adventure/a-pokopia-player-has-spent-260-hours-over-22-days-recreating-an-underground-cyberpunk-city-i-swear-to-god-you-people-arent-human"],["TechRadar：《朋友收集》新作评测","https://www.techradar.com/nz/gaming/tomodachi-life-living-the-dream-review"],["GamesRadar：任天堂顺势宣传戏剧性","https://www.gamesradar.com/games/simulation/tomodachi-life-living-the-dreams-viral-soap-opera-lore-expands-as-nintendo-embraces-the-drama-and-silliness-of-the-life-sim-not-hugh-friendzoning-angie-on-live-tv/"],["Game Informer：《朋友收集》缺少社交功能","https://gameinformer.com/review/tomodachi-life-living-the-dream/you-get-what-you-give"],["VGC：《朋友收集》禁用截图上传","https://www.videogameschronicle.com/review/tomodachi-life-living-the-dream-review/"]];
+$("#src").innerHTML=SR.map(s=>`<li><a href="${s[1]}" target="_blank" rel="noopener">${s[0]}</a></li>`).join("");
+
+
+/* 参考截图：点开大图 */
+document.addEventListener("click",e=>{const im=e.target.closest(".shot img");if(im){const d=document.createElement("div");d.className="lb";d.setAttribute("role","dialog");d.innerHTML=`<div><img src="${im.src}" alt=""><p></p></div>`;d.querySelector("p").textContent=im.alt+"（点击任意处关闭）";d.onclick=()=>d.remove();document.body.append(d)}});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")document.querySelector(".lb")?.remove()});
+/* 参考截图：图片存在才显示 */
+document.querySelectorAll(".shots[data-shots]").forEach(el=>{
+  el.dataset.shots.split(";").forEach(s=>{const[f,cap,url]=s.split("|");const fig=document.createElement("figure");fig.className="shot";
+    const img=new Image();img.alt=cap;img.loading="lazy";img.onerror=()=>fig.remove();img.src=`a/${f}.webp`;
+    const fc=document.createElement("figcaption");fc.textContent=cap+" ";const a=document.createElement("a");a.href=url;a.target="_blank";a.rel="noopener";a.textContent="来源";fc.append(a);fig.append(img,fc);el.append(fig)});
+});
+
+function patURL(ic,ey){
+  const eye=(x,y)=>`<circle cx="${x}" cy="${y}" r="5" fill="none" stroke="${ey}" stroke-width="2.6"/><circle cx="${x+1.6}" cy="${y-1.6}" r="1.9" fill="${ey}"/>`;
+  const sleepy=(x,y)=>`<path d="M${x-5} ${y}h10" stroke="${ey}" stroke-width="2.6" stroke-linecap="round"/>`;
+  const mouth=(x,y)=>`<path d="M${x-3} ${y}q3 3 6 0" fill="none" stroke="${ey}" stroke-width="2.2" stroke-linecap="round"/>`;
+  const head=`<ellipse cx="30" cy="38" rx="22" ry="17" fill="${ic}"/>`;
+  const I={
+   up:`<ellipse cx="21" cy="16" rx="6.5" ry="14" fill="${ic}"/><ellipse cx="39" cy="16" rx="6.5" ry="14" fill="${ic}"/>${head}${eye(22,37)}${eye(38,37)}${mouth(30,45)}`,
+   knot:`<path d="M20 28C8 8 26 2 30 14C34 2 52 8 40 28z" fill="${ic}"/><circle cx="30" cy="14" r="6" fill="${ey}" opacity=".5"/>${head}${eye(22,37)}${eye(38,37)}${mouth(30,45)}`,
+   curl:`<circle cx="15" cy="20" r="10" fill="${ic}"/><circle cx="45" cy="20" r="10" fill="${ic}"/><path d="M15 20m-4 0a4 4 0 1 1 4 4" fill="none" stroke="${ey}" stroke-width="2.4" stroke-linecap="round"/><path d="M45 20m4 0a4 4 0 1 0-4 4" fill="none" stroke="${ey}" stroke-width="2.4" stroke-linecap="round"/>${head}${eye(22,37)}${eye(38,37)}${mouth(30,45)}`,
+   droop:`<ellipse cx="10" cy="40" rx="6.5" ry="15" fill="${ic}" transform="rotate(25 10 40)"/><ellipse cx="50" cy="40" rx="6.5" ry="15" fill="${ic}" transform="rotate(-25 50 40)"/>${head}${sleepy(22,37)}${sleepy(38,37)}${mouth(30,45)}`,
+   coin:`<circle cx="30" cy="30" r="20" fill="${ic}"/><circle cx="30" cy="30" r="14" fill="none" stroke="${ey}" stroke-width="2.4"/><ellipse cx="26" cy="22" rx="3" ry="6" fill="${ey}"/><ellipse cx="34" cy="22" rx="3" ry="6" fill="${ey}"/><ellipse cx="30" cy="33" rx="8" ry="6" fill="${ey}"/>`,
+   claw:`<rect x="20" y="4" width="20" height="12" rx="4" fill="${ic}"/><rect x="28" y="0" width="4" height="6" fill="${ic}"/><path d="M24 16C10 26 12 44 20 52M36 16C50 26 48 44 40 52" fill="none" stroke="${ic}" stroke-width="6" stroke-linecap="round"/>`,
+   star:`<path d="M30 6l6 18 18 6-18 6-6 18-6-18-18-6 18-6z" fill="${ic}"/>`
+  };
+  const place=[["up",30,30,-12,1.15],["coin",160,40,10,.8],["curl",95,120,8,1.1],["star",225,105,0,.55],["knot",200,190,-10,1.1],["claw",40,190,14,.85],["droop",120,230,6,1.05],["star",70,90,20,.4],["coin",240,250,-6,.6]];
+  const g=place.map(([k,x,y,r,sc])=>`<g transform="translate(${x} ${y}) rotate(${r}) scale(${sc}) translate(-30 -30)">${I[k]}</g>`).join("");
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="280" height="280" viewBox="0 0 280 280">${g}${g.replace(/translate\((\d+) (\d+)\)/g,(m,x,y)=>`translate(${+x-280} ${y})`)}${g.replace(/translate\((\d+) (\d+)\)/g,(m,x,y)=>`translate(${x} ${+y-280})`)}</svg>`;
+  return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+}
+
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+document.querySelectorAll(".band[data-i]").forEach(sec=>{sec.style.setProperty("--pat",patURL(sec.dataset.i,sec.dataset.e));const p=document.createElement("div");p.className="pat";p.setAttribute("aria-hidden","true");p.innerHTML="<i></i>";sec.prepend(p)});
+if(!reduce){const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.06});document.querySelectorAll(".reveal").forEach(el=>io.observe(el))}
+else document.querySelectorAll(".reveal").forEach(el=>el.classList.add("in"));
+}
+</script>
+</body>
+</html>

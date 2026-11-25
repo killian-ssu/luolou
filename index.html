@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>漏漏娃娃机</title>
+<meta name="description" content="在奇幻的娃娃机中探索，搭建你的梦幻世界。机器里住着一群叫「漏漏」的奇幻生物，每一只脾气都不一样。">
+<meta property="og:title" content="漏漏娃娃机">
+<meta property="og:description" content="在奇幻的娃娃机中探索，搭建你的梦幻世界。可直接在网页里走动、夹娃娃、给漏漏拍鉴定报告。">
+<meta property="og:image" content="https://killian-ssu.github.io/luolou/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="a/ear-knot.webp">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/*
+VOICE   温暖、俏皮、像一盒刚拆开的游戏卡带
+IDEA    整页是一台娃娃机：首屏是岛，往下每一段都是机器里的一格
+PICTURE 原画全幅铺开；可玩的小岛装在草莓红机壳里
+COLOUR  暖纸底 + 可可棕字，颜色交给插画；点缀只用草莓红 / 柠檬黄 / 河水青
+TYPE    站酷快乐体做标题，思源黑体做正文
+*/
+:root{color-scheme:light dark;
+--bg:light-dark(#FBF3E4,#211915);--card:light-dark(#FFFBF3,#2C221D);--ink:light-dark(#3B2A22,#FBEFDF);--soft:light-dark(#7A6455,#CDB8A6);
+--line:light-dark(rgba(59,42,34,.14),rgba(251,239,223,.16));--berry:#E8505B;--berry-d:#C23A47;--lemon:#FFC93C;--aqua:#4CC3C0;--cab:#F07A86;
+--disp:"ZCOOL KuaiLe","PingFang SC","Microsoft YaHei",sans-serif;--body:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 var(--body);overflow-x:clip}
+img{display:block;max-width:100%}
+h1,h2,h3{font-family:var(--disp);font-weight:400;line-height:1.1;margin:0;text-wrap:balance}
+h2{font-size:clamp(32px,4.4vw,50px)}
+h3{font-size:24px}
+p{margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--aqua);outline-offset:3px;border-radius:10px}
+.wrap{max-width:1240px;margin:0 auto}
+.band{padding:clamp(48px,7vw,104px) max(5vw,16px)}
+.lede{font-size:17px;color:var(--soft);max-width:36em;margin-top:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:0 22px;border-radius:999px;border:2.5px solid #3B2A22;background:var(--lemon);color:#3B2A22;font-weight:700;font-size:16px;box-shadow:0 4px 0 #3B2A22;transition:transform .12s,box-shadow .12s;text-decoration:none}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 0 #3B2A22}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 #3B2A22}
+.btn.red{background:var(--berry);color:#fff}
+.btn.ghost{background:#FFFBF3}
+.btn[disabled]{opacity:.5;pointer-events:none}
+
+/* 导航 */
+.nav{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;gap:18px;padding:8px max(5vw,16px);overflow-x:auto}
+.nav .brand{font-family:var(--disp);font-size:22px;color:var(--berry);flex:none;text-decoration:none}
+.nav a.l{color:var(--ink);text-decoration:none;font-size:15px;flex:none;padding:6px 2px}
+.nav a.l:hover{color:var(--berry)}
+.nav .btn{margin-left:auto;min-height:38px;padding:0 16px;font-size:14px;flex:none}
+
+/* 首屏 */
+.hero{position:relative;min-height:min(92vh,820px);display:grid;align-items:end;overflow:hidden;isolation:isolate}
+.hero .bg{position:absolute;inset:-4% 0 0;z-index:-2;background:url(a/hero-world.webp) center 40%/cover}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(251,243,228,0) 40%,rgba(251,243,228,.0) 60%,var(--bg) 99%)}
+.hero .inner{width:100%;max-width:1240px;margin:0 auto;padding:0 max(5vw,16px) clamp(28px,5vw,56px);display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:24px;align-items:end}
+.logo{width:min(470px,100%);filter:drop-shadow(0 10px 18px rgba(59,42,34,.25));animation:float 5s ease-in-out infinite;transform-origin:50% 80%}
+@keyframes float{50%{transform:translateY(-10px) rotate(-1.5deg)}}
+.ticket{background:var(--card);border:2.5px solid #3B2A22;border-radius:26px;padding:24px 26px;box-shadow:0 8px 0 #3B2A22;position:relative}
+.ticket h1{font-size:clamp(30px,3.6vw,44px)}
+.ticket p{margin-top:10px;color:var(--soft);font-size:17px}
+.ticket .row{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px}
+.ticket .peek{position:absolute;right:18px;top:-62px;width:92px;animation:peek 4s ease-in-out infinite}
+@keyframes peek{0%,70%,100%{transform:translateY(8px)}80%,92%{transform:translateY(-6px)}}
+
+/* 三步 */
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:8px}
+.step{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:18px 20px;display:grid;grid-template-columns:96px minmax(0,1fr);gap:14px;align-items:center}
+.step img{width:96px;transition:transform .3s}
+.step:hover img{transform:rotate(-6deg) scale(1.06)}
+.step b{font-family:var(--disp);font-weight:400;font-size:26px;color:var(--berry)}
+.step p{color:var(--soft);font-size:15px}
+
+/* 游戏机壳 */
+.cab{max-width:calc((100vh - 120px)*16/9 + 40px);margin:24px auto 0;background:var(--cab);border:3px solid #3B2A22;border-radius:34px;padding:14px;box-shadow:0 10px 0 #3B2A22,inset 0 3px 0 rgba(255,255,255,.35)}
+.marq{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:2px 8px 12px}
+.bulbs{display:flex;gap:7px;margin-right:6px}
+.bulbs i{width:11px;height:11px;border-radius:50%;background:#FFE9A8;border:2px solid #3B2A22;animation:blink 1.2s infinite}
+.bulbs i:nth-child(2n){animation-delay:.6s}
+@keyframes blink{50%{background:var(--lemon);box-shadow:0 0 10px var(--lemon)}}
+.mode{font-family:var(--disp);font-size:22px;color:#fff;text-shadow:0 2px 0 #3B2A22}
+.hud{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap}
+.hud span{background:#FFFBF3;color:#3B2A22;border:2px solid #3B2A22;border-radius:999px;padding:2px 12px 2px 8px;font-weight:700;font-size:14px;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.hud i{width:22px;height:22px;display:inline-block;background:center/contain no-repeat}
+.hud .c i{background-image:url(a/res-coin.webp)}.hud .w i{background-image:url(a/res-wood.webp)}.hud .s i{background-image:url(a/res-sprout.webp)}.hud .r i{background-image:url(a/luolou-hop-a.webp)}
+.hud span.pop{animation:pop .4s}
+@keyframes pop{40%{transform:scale(1.18)}}
+.stage{position:relative;aspect-ratio:16/9;border-radius:22px;overflow:hidden;border:3px solid #3B2A22;background:#F6C3C8;touch-action:none;outline:none}
+.stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.ovl{position:absolute;inset:0;pointer-events:none}
+.ovl>*{pointer-events:auto}
+.act{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);display:flex;gap:10px;flex-wrap:wrap;justify-content:center;width:max-content;max-width:calc(100% - 24px)}
+.act .btn{min-height:48px}
+.toast{position:absolute;left:50%;top:14px;transform:translate(-50%,-140%);background:#3B2A22;color:#FFFBF3;border-radius:999px;padding:8px 18px;font-size:15px;transition:transform .35s;max-width:calc(100% - 24px);text-align:center;pointer-events:none}
+.toast.on{transform:translate(-50%,0)}
+.help{position:absolute;left:14px;bottom:14px;background:rgba(255,251,243,.92);color:#3B2A22;border:2px solid #3B2A22;border-radius:14px;padding:6px 12px;font-size:13px;line-height:1.5;max-width:46%}
+.panel{position:absolute;inset:0;display:none;place-items:safe center;background:rgba(59,42,34,.45);padding:16px;overflow:auto}
+.panel.on{display:grid}
+.pbox{background:#FFFBF3;color:#3B2A22;border:3px solid #3B2A22;border-radius:26px;padding:22px;max-width:min(560px,100%);box-shadow:0 8px 0 #3B2A22;text-align:center;animation:drop .45s cubic-bezier(.3,1.6,.5,1)}
+@keyframes drop{from{transform:translateY(-40px) scale(.9);opacity:0}}
+.pbox h3{font-size:30px;color:var(--berry)}
+.pbox img.big{width:180px;margin:4px auto}
+.pbox .row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.pbox .meta{display:grid;gap:4px;margin-top:8px;color:#7A6455;font-size:15px}
+.pbox.wide{max-width:min(760px,100%);display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:20px;text-align:left;align-items:center}
+.panel .card{max-width:300px;padding:14px;font-size:13px;line-height:1.5}.panel .card .pic{aspect-ratio:2/1;margin:6px 0}.panel .card .pic img{width:auto;height:92%}.panel .card .stamp{top:96px;width:64px;height:64px;font-size:15px}.panel .card .code{font-size:28px}.panel .card .tname{font-size:19px}.panel .card .tags{margin:6px 0}.panel .card hr{margin:8px 0}.pbox.wide{padding:16px}
+.paper{position:absolute;width:13%;aspect-ratio:3/4;background:#FFFBF3;border:2px solid #3B2A22;border-radius:6px;transform:translateY(-30%) scaleY(.1);transform-origin:top;opacity:0;transition:transform 1s cubic-bezier(.2,.9,.3,1),opacity .2s}
+.paper.on{opacity:1;transform:translateY(0) scaleY(1)}
+.flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
+.flash.on{animation:flash .7s}
+@keyframes flash{0%{opacity:1}100%{opacity:0}}
+.keys{display:flex;gap:18px;flex-wrap:wrap;color:var(--soft);font-size:14px;margin-top:20px}
+.keys kbd{font:700 13px var(--body);border:2px solid var(--ink);border-bottom-width:4px;border-radius:7px;padding:0 7px;color:var(--ink)}
+
+/* 报告卡 */
+.card{width:100%;max-width:340px;margin:0 auto;background:#FFFBF3;color:#3B2A22;border:2.5px solid #3B2A22;border-radius:20px;padding:18px;position:relative;font-size:14px;line-height:1.6;box-shadow:0 6px 0 #3B2A22;text-align:left}
+.card .top{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--disp);font-size:22px;color:#3B2A22}
+.card .top span{font-family:var(--body);font-size:12px;color:#7A6455}
+.card .date{font-size:12px;color:#7A6455}
+.card .pic{margin:10px 0;background:#D8F0EE;border:2px solid #3B2A22;border-radius:14px;aspect-ratio:5/4;display:grid;place-items:center;background-image:radial-gradient(circle at 50% 120%,#BFE6E3 0 50%,transparent 51%)}
+.card .pic img{width:72%}
+.card .code{font-family:var(--disp);font-size:34px;color:var(--berry);line-height:1}
+.card .tname{font-family:var(--disp);font-size:22px;margin-top:2px}
+.card .tags{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.card .tags span{background:#FFE7A0;border:1.5px solid #3B2A22;border-radius:999px;padding:0 10px;font-size:13px;font-weight:700}
+.card .verdict{font-weight:500}
+.card .verdict.loading{color:#7A6455}
+.card hr{border:0;border-top:2px dashed rgba(59,42,34,.25);margin:12px 0}
+.card dl{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;margin:0}
+.card dt{color:#7A6455}.card dd{margin:0;font-weight:700}
+.card .stamp{position:absolute;right:16px;top:118px;width:78px;height:78px;border-radius:50%;border:3px solid var(--berry);color:var(--berry);display:grid;place-items:center;font-family:var(--disp);font-size:18px;transform:rotate(-14deg);opacity:.85;background:rgba(255,251,243,.6)}
+.card .visitor{margin-top:10px;border:2px solid #3E7BC4;color:#2F5F9B;border-radius:12px;padding:6px 10px;font-size:13px;background:#EEF4FB}
+.card.print{animation:print 1s cubic-bezier(.2,.9,.3,1)}
+@keyframes print{from{clip-path:inset(0 0 100% 0);transform:translateY(-24px)}}
+
+/* 认识漏漏 */
+.meet{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(24px,4vw,56px);align-items:center;margin-top:34px}
+.earstage{position:relative;background:var(--card);border:1px solid var(--line);border-radius:30px;aspect-ratio:1;display:grid;place-items:center;overflow:hidden}
+.earstage::before{content:"";position:absolute;inset:18%;border-radius:50%;background:radial-gradient(circle,#FFE7A0,transparent 70%);opacity:.7}
+.earstage img{width:78%;position:relative;animation:bob 2.6s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-12px) scaleX(1.03)}}
+.earstage .tag{position:absolute;left:20px;top:18px;font-family:var(--disp);font-size:28px;color:var(--berry)}
+.earpick{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:22px}
+.earpick button{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:8px 4px;display:grid;justify-items:center;gap:2px;font-size:14px}
+.earpick button img{width:70px}
+.earpick button[aria-pressed=true]{border-color:var(--berry);background:#FFE9EB;color:#3B2A22}
+.earinfo{margin-top:18px;font-size:17px}
+.earinfo b{color:var(--berry)}
+.strip{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:8px 2px 14px;margin-top:14px}
+.strip figure{flex:none;margin:0;width:112px;text-align:center;scroll-snap-align:start;font-size:14px;color:var(--soft)}
+.strip figure img{width:112px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:6px;transition:transform .25s}
+.strip figure:hover img{transform:translateY(-6px) rotate(-4deg)}
+.rowtitle{display:flex;gap:12px;align-items:baseline;margin-top:34px}
+.rowtitle h3{font-size:22px}
+.rowtitle span{color:var(--soft);font-size:15px}
+
+/* 场景 */
+.poster{border-radius:28px;overflow:hidden;border:3px solid #3B2A22;box-shadow:0 8px 0 #3B2A22}
+.gal{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 2px 18px;margin-top:28px}
+.gal figure{flex:none;width:min(420px,80vw);margin:0;scroll-snap-align:start}
+.gal img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:22px;border:2px solid #3B2A22}
+.gal figcaption{margin-top:10px;font-size:15px;color:var(--soft)}
+.gal figcaption b{color:var(--ink);font-family:var(--disp);font-weight:400;font-size:20px;display:block}
+.galnav{display:flex;gap:10px;justify-content:flex-end;margin-top:-8px}
+.galnav button{width:46px;height:46px;border-radius:50%;border:2px solid var(--ink);background:var(--card);font-size:20px}
+
+.ba{position:relative;margin-top:30px;border-radius:28px;overflow:hidden;border:3px solid #3B2A22;box-shadow:0 8px 0 #3B2A22;aspect-ratio:1672/941}
+.ba img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ba .pre{clip-path:inset(0 calc(100% - var(--p)) 0 0)}
+.ba .lb{position:absolute;top:14px;background:#FFFBF3;color:#3B2A22;border:2px solid #3B2A22;border-radius:999px;padding:2px 12px;font-size:14px;font-weight:700}
+.ba .lb.l{left:14px}.ba .lb.r{right:14px}
+.ba input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
+.ba .knob{position:absolute;top:0;bottom:0;left:var(--p);width:4px;margin-left:-2px;background:#FFFBF3;pointer-events:none;box-shadow:0 0 0 2px #3B2A22}
+.ba .knob::after{content:"‹ ›";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:46px;height:46px;border-radius:50%;background:var(--lemon);border:3px solid #3B2A22;display:grid;place-items:center;font-weight:700;color:#3B2A22}
+.ba:has(input:focus-visible) .knob::after{outline:3px solid var(--aqua)}
+.zones{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:22px}
+.zones figure{margin:0}.zones img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:22px;border:2px solid #3B2A22}
+.zones figcaption{margin-top:10px;font-size:15px;color:var(--soft)}.zones b{display:block;color:var(--ink);font-family:var(--disp);font-weight:400;font-size:20px}
+.poster{margin-top:40px}
+@media(max-width:700px){.zones{grid-template-columns:minmax(0,1fr)}.ba .lb{font-size:12px}}
+/* Mini App */
+.mini{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:28px;margin-top:30px;align-items:start}
+.booth{background:var(--card);border:1px solid var(--line);border-radius:28px;padding:16px}
+.studio{position:relative;border-radius:20px;overflow:hidden;border:2px solid #3B2A22;aspect-ratio:3/2;background:url(a/studio-world.webp) center/cover}
+.studio .sit{position:absolute;left:29.6%;bottom:31%;width:20%;transform:translateX(-50%);transition:transform .3s;filter:drop-shadow(0 6px 4px rgba(0,0,0,.18))}
+.studio.scan .sit{animation:wig .25s 6}
+@keyframes wig{50%{transform:translateX(-50%) rotate(5deg)}}
+.studio .flash{border-radius:20px}
+.lab{font-weight:700;font-size:15px;margin:16px 0 8px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips label{position:relative}
+.chips input{position:absolute;opacity:0;inset:0}
+.chips span{display:inline-flex;align-items:center;min-height:40px;padding:0 14px;border-radius:999px;border:2px solid var(--line);background:var(--bg);font-size:15px;cursor:pointer}
+.chips input:checked+span{border-color:#3B2A22;background:var(--lemon);color:#3B2A22;font-weight:700}
+.chips input:focus-visible+span{outline:3px solid var(--aqua)}
+.earmini{display:flex;gap:8px;flex-wrap:wrap}
+.earmini button{width:66px;height:62px;border-radius:16px;border:2px solid var(--line);background:var(--bg);padding:2px}
+.earmini button[aria-pressed=true]{border-color:#3B2A22;background:var(--lemon)}
+.out{display:grid;gap:14px}
+.out .empty{border:2px dashed var(--line);border-radius:20px;padding:30px 20px;text-align:center;color:var(--soft)}
+.cardact{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.cardact .btn{min-height:42px;padding:0 16px;font-size:14px}
+.stampf{display:none;gap:8px;justify-content:center}
+.stampf.on{display:flex}
+.stampf input{font:16px var(--body);min-height:42px;border-radius:999px;border:2px solid var(--ink);padding:0 14px;background:var(--card);color:var(--ink);width:220px}
+.note{font-size:13px;color:var(--soft);text-align:center}
+.sub2{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:28px;margin-top:40px}
+.dex{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}
+.dex div{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:8px 6px;text-align:center;font-size:13px}
+.dex img{width:70%;margin:0 auto}
+.dex .lock img{filter:brightness(0) opacity(.18)}
+.dex .lock b{color:var(--soft)}
+.dex b{display:block;font-weight:700}
+.dex small{color:var(--soft)}
+.quiz fieldset{border:0;padding:0;margin:0 0 12px}
+.quiz legend{font-weight:700;margin-bottom:6px}
+
+/* 循环 */
+.loop{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,56px);margin-top:30px;align-items:center}
+.ring{position:relative;aspect-ratio:1;max-width:520px;width:100%;margin:0 auto}
+.ring svg{position:absolute;inset:0;width:100%;height:100%}
+.node{position:absolute;width:31%;transform:translate(-50%,-50%);text-align:center}
+.node img{width:62%;margin:0 auto;background:var(--card);border:2.5px solid #3B2A22;border-radius:50%;padding:6px;box-shadow:0 4px 0 #3B2A22}
+.node b{display:block;font-family:var(--disp);font-weight:400;font-size:22px;margin-top:4px}
+.node small{display:block;color:var(--soft);font-size:13px;line-height:1.4}
+.why{display:grid;gap:16px}
+.why div{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px 20px}
+.why h3{font-size:22px}
+.why p{color:var(--soft);margin-top:6px}
+.ai{margin-top:34px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.ai div{border-radius:22px;padding:20px;border:2px solid #3B2A22}
+.ai .r{background:#D8F0EE;color:#3B2A22}.ai .g{background:#FFE7A0;color:#3B2A22}
+.ai p{margin-top:6px}
+footer{padding:40px max(5vw,16px) 56px;text-align:center;color:var(--soft);font-size:14px;border-top:1px solid var(--line)}
+footer img{width:160px;margin:0 auto 10px}
+
+
+/* ===== 第三版：彩色板块 + 漏漏纹理 ===== */
+.nav{background:#FFFBF3;border-bottom:3px solid #3B2A22;color:#3B2A22}
+.nav .brand{display:flex;align-items:center;gap:6px}.nav .brand img{width:34px;margin:-6px 0}
+.nav a.l{color:#3B2A22}
+.col{position:relative;background:var(--c);color:#3B2A22;--ink:#3B2A22;--soft:#5E463A;--card:#FFFBF3;--line:rgba(59,42,34,.22);--bg:#FFF6E6;isolation:isolate;padding-top:clamp(64px,8vw,112px)}
+.col::before{content:"";position:absolute;left:0;right:0;top:-22px;height:24px;background:radial-gradient(circle at 24px 24px,var(--c) 23px,transparent 24.5px) 0 0/48px 24px repeat-x;z-index:1}
+.col .pat{position:absolute;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+.col .pat i{position:absolute;inset:-280px;background:var(--pat) 0 0/280px 280px;animation:drift 38s linear infinite;transform:translateY(calc(var(--py,0) * 1px))}
+@keyframes drift{to{background-position:280px 280px}}
+.col .wrap>h2{text-align:center;color:#fff;font-size:clamp(36px,5vw,60px);-webkit-text-stroke:7px #3B2A22;paint-order:stroke fill;text-shadow:0 6px 0 #3B2A22;letter-spacing:.02em}
+.col .wrap>h2::after{content:"";display:block;width:min(320px,60%);margin:18px auto 0;border-top:5px dashed #fff;opacity:.9;-webkit-text-stroke:0}
+.col .wrap>.lede{margin:18px auto 0;text-align:center;color:#3B2A22;font-weight:500;font-size:18px;max-width:34em}
+.col .cab{box-shadow:0 10px 0 #3B2A22,0 30px 60px rgba(59,42,34,.25)}
+.col .cab{background:#E8505B}
+.btn.red{background:#E8505B}
+.col .keys{justify-content:center;color:#3B2A22}.col .keys kbd{border-color:#3B2A22;color:#3B2A22;background:#FFFBF3}
+.col .step,.col .earstage,.col .booth,.col .why div,.col .dex div,.col .earpick button,.col .strip figure img,.col .out .empty{border:3px solid #3B2A22;box-shadow:0 5px 0 #3B2A22;background:#FFFBF3}
+.col .earpick button[aria-pressed=true]{background:#FFE7A0}
+.col .strip figure figcaption{color:#3B2A22;font-weight:700;margin-top:6px}
+.col .rowtitle h3{background:#FFFBF3;border:3px solid #3B2A22;border-radius:999px;padding:2px 16px;box-shadow:0 4px 0 #3B2A22}
+.col .rowtitle span{color:#3B2A22}
+.col .gal figcaption,.col .zones figcaption{background:#FFFBF3;border:3px solid #3B2A22;border-radius:18px;padding:10px 14px;color:#5E463A;box-shadow:0 4px 0 #3B2A22}
+.col .zones img,.col .gal img{border-width:3px}
+.col .galnav button{background:#FFFBF3;border:3px solid #3B2A22;box-shadow:0 4px 0 #3B2A22;color:#3B2A22}
+.col .sub2>div{background:#FFFBF3;border:3px solid #3B2A22;border-radius:26px;padding:20px;box-shadow:0 6px 0 #3B2A22}
+.col .sub2 .dex div{box-shadow:none;border-width:2px}
+.col .ai div{box-shadow:0 5px 0 #3B2A22;border-width:3px}
+.col .ring{color:#3B2A22}
+.col .ring::before{content:"";position:absolute;inset:15%;border-radius:50%;background:#FFFBF3;border:3px solid #3B2A22;box-shadow:0 6px 0 #3B2A22}
+.col .node small{color:#5E463A}
+.flank{position:absolute;width:clamp(120px,12vw,190px);top:110px;z-index:2;animation:bob2 3.4s ease-in-out infinite;filter:drop-shadow(0 8px 0 rgba(59,42,34,.18));transition:transform .2s;cursor:pointer}
+.flank.l{left:max(1vw,calc(50% - 760px));transform-origin:50% 100%}
+.flank.r{right:max(1vw,calc(50% - 760px));animation-delay:-1.7s}
+.flank:hover{animation:hop .5s}
+@keyframes bob2{50%{translate:0 -12px;rotate:-3deg}}
+@keyframes hop{30%{translate:0 -36px;scale:1.05 .95}60%{translate:0 0;scale:1.08 .9}}
+.townband{position:relative;height:120px;margin-top:-1px;background:#C5B3EE;color:#3B2A22;overflow:hidden}
+.townband svg{position:absolute;left:0;bottom:0;width:100%;height:120px;color:#3B2A22}
+footer{background:#3B2A22;color:#F2E3D0;border:0}
+.reveal{opacity:0;translate:0 26px;transition:opacity .6s,translate .6s cubic-bezier(.2,.9,.3,1.2)}
+.reveal.in{opacity:1;translate:0 0}
+.col .wrap>h2.reveal{translate:0 0;scale:.8}.col .wrap>h2.reveal.in{scale:1;transition:opacity .4s,scale .6s cubic-bezier(.3,1.7,.5,1)}
+.steps-band{background:#FFF6E6;position:relative}
+@media(max-width:1180px){.flank{display:none}}
+@media(max-width:600px){.col .wrap>h2{font-size:32px;-webkit-text-stroke:5px #3B2A22;text-shadow:0 4px 0 #3B2A22}.col .wrap>.lede{font-size:16px}}
+@media(prefers-reduced-motion:reduce){.col .pat i{animation:none}.reveal{opacity:1;translate:0 0}}
+
+
+/* 节奏：主题黄（带纹理）只用在两处高潮，其余奶油/浅黄素底 */
+.col.plain .wrap>h2,.col.tint .wrap>h2{color:#3B2A22;-webkit-text-stroke:0;text-shadow:none}
+.col.plain .wrap>h2::after,.col.tint .wrap>h2::after{border-top-color:#F0BC22}
+.col.plain .ring::before,.col.tint .ring::before{background:#FFFFFF}
+.col.plain .earstage,.col.plain .why div,.col.plain .ai div,.col.plain .earpick button,.col.plain .strip figure img,.col.plain .rowtitle h3{box-shadow:0 4px 0 #3B2A22}
+.col.tint .gal figcaption,.col.tint .zones figcaption{background:#fff}
+.townband{background:#FFF8EA}
+.steps-band{background:#FFF8EA}
+
+.card{background:url(a/report-paper.webp) center/100% 100% no-repeat;border:0;box-shadow:none;filter:drop-shadow(0 6px 0 rgba(59,42,34,.28));padding:24px 22px 26px}
+.flank.edge{left:-30px!important;width:clamp(150px,14vw,220px)}
+.finale{background:#FFF8EA;padding:clamp(40px,6vw,80px) max(5vw,16px) 0;text-align:center}
+.finale .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:end;text-align:left}
+.finale img{width:min(420px,100%);margin:0 auto;filter:drop-shadow(0 12px 0 rgba(59,42,34,.15));animation:float 5s ease-in-out infinite}
+.finale h2{font-size:clamp(34px,4.6vw,56px)}
+.finale p{margin:14px 0 22px;font-size:18px;color:#5E463A;max-width:24em}
+.finale .txt{padding-bottom:clamp(40px,6vw,90px)}
+@media(max-width:700px){.finale .wrap{grid-template-columns:minmax(0,1fr);text-align:center}.finale p{margin-inline:auto}}
+
+@media(max-width:900px){
+ .hero .inner,.meet,.mini,.sub2,.loop{grid-template-columns:minmax(0,1fr)}
+ .logo{width:min(340px,80%)}
+ .pbox.wide{grid-template-columns:minmax(0,1fr)}
+}
+@media(max-width:700px){
+ .stage{aspect-ratio:4/5}
+ .steps{grid-template-columns:minmax(0,1fr)}
+ .step{grid-template-columns:72px minmax(0,1fr)}.step img{width:72px}
+ .help{display:none}
+ .hud{margin-left:0}
+ .ai{grid-template-columns:minmax(0,1fr)}
+ .dex{grid-template-columns:repeat(4,minmax(0,1fr))}
+ .ticket .peek{width:70px;top:-48px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<nav class="nav" aria-label="页面导航"><div class="wrap">
+  <a class="brand" href="#top"><img src="a/ear-knot.webp" alt="">漏漏娃娃机</a>
+  <a class="l" href="#play">玩一把</a>
+  <a class="l" href="#meet">认识漏漏</a>
+  <a class="l" href="#scene">场景</a>
+  <a class="l" href="#mini">鉴定机</a>
+  <a class="l" href="#loop">玩法与传播</a>
+  <a class="l" href="research/">前期研究</a>
+  <a class="btn red" href="#play">进岛</a>
+</div></nav>
+
+<header class="hero" id="top">
+  <div class="bg" id="heroBg" role="img" aria-label="漏漏娃娃机小岛全景：中央是草莓红娃娃机，旁边是黄色鉴定机，漏漏们在工地、菜园和河边忙碌"></div>
+  <div class="inner">
+    <img class="logo" src="a/title-logo.webp" alt="漏漏娃娃机">
+    <div class="ticket">
+      <img class="peek" src="a/ear-knot.webp" alt="">
+      <h1>在奇幻的娃娃机中探索，搭建你的梦幻世界。</h1>
+      <p>机器里住着一群叫「漏漏」的奇幻生物。夹出木头和花苗，也夹出漏漏；每一只脾气都不一样，读懂它，就知道该让它干什么。</p>
+      <div class="row"><a class="btn red" href="#play">进岛玩一把</a><a class="btn ghost" href="#mini">试试鉴定机</a></div>
+    </div>
+  </div>
+</header>
+
+<section class="band steps-band" style="padding-top:28px" aria-label="核心玩法">
+  <div class="wrap steps">
+    <div class="step"><img src="a/cast-act-dead.webp" alt=""><div><b>夹</b><p>投一枚娃娃币，从柜子里夹出建材，或者一只漏漏。</p></div></div>
+    <div class="step"><img src="a/ear-curl.webp" alt=""><div><b>鉴定</b><p>送进鉴定机拍一张照，打印出它的性格报告。</p></div></div>
+    <div class="step"><img src="a/cast-act-haul.webp" alt=""><div><b>建造</b><p>按脾气安排岗位，它们干活攒币，你把空地盖成家。</p></div></div>
+  </div>
+</section>
+
+<section class="band col" id="play" data-c="#FFD34A" data-i="#FFDE72" data-e="#F0BC22"><img class="flank l" src="a/cheer-01.webp" alt=""><img class="flank r" src="a/cheer-03.webp" alt="">
+  <div class="wrap">
+    <h2>进岛玩一把</h2>
+    <p class="lede">走到娃娃机前夹一只漏漏，带它去鉴定机拍照，再把它安顿到岛上。它会自己去干活。</p>
+    <div class="cab">
+      <div class="marq">
+        <div class="bulbs" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+        <span class="mode" id="modeName">小岛</span>
+        <div class="hud" aria-live="polite">
+          <span class="c" id="hCoin"><i></i>娃娃币 <b>5</b></span>
+          <span class="w" id="hWood"><i></i>木头 <b>0</b></span>
+          <span class="s" id="hSprout"><i></i>花苗 <b>0</b></span>
+          <span class="r" id="hRes"><i></i>居民 <b>0</b></span>
+        </div>
+      </div>
+      <div class="stage" id="stage" tabindex="0" aria-label="可玩的小岛。方向键或 WASD 移动，E 键互动；也可以直接点击要去的地方。">
+        <canvas id="cv"></canvas>
+        <div class="ovl">
+          <div class="paper" id="paper" aria-hidden="true"></div>
+          <div class="flash" id="flash"></div>
+          <div class="help" id="help">点地面走过去 · 方向键 / WASD 移动 · E 互动</div>
+          <div class="act" id="act"></div>
+          <div class="toast" id="toast" role="status"></div>
+          <div class="panel" id="panel"></div>
+        </div>
+      </div>
+    </div>
+    <div class="keys"><span><kbd>←</kbd><kbd>→</kbd> 或 <kbd>A</kbd><kbd>D</kbd> 移动抓爪</span><span><kbd>空格</kbd> 下爪</span><span><kbd>E</kbd> 互动</span><span>进度只保存在这次打开的页面里</span></div>
+  </div>
+</section>
+
+<section class="band col plain" id="meet" data-c="#FFF8EA">
+  <div class="wrap">
+    <h2>看耳朵猜脾气，看眼神认心情</h2>
+    <p class="lede">漏漏只有一个物种，团子身体、奶油色大耳朵、一双大白眼。耳朵是天生的，透露它的两项性格；表情随时在变，是它此刻的状态。</p>
+    <div class="meet">
+      <div class="earstage"><span class="tag" id="earTag">竖耳</span><img id="earBig" src="a/ear-up.webp" alt="竖耳漏漏"></div>
+      <div>
+        <div class="earpick" id="earPick"></div>
+        <p class="earinfo" id="earInfo"></p>
+      </div>
+    </div>
+    <div class="rowtitle"><h3>表情</h3><span>当下的反应都写在脸上</span></div>
+    <div class="strip" id="faces"></div>
+    <div class="rowtitle"><h3>岗位装扮</h3><span>同一只漏漏，换个帽子就是不同的工</span></div>
+    <div class="strip" id="wears"></div>
+    <div class="rowtitle"><h3>毛色与动作</h3><span>五种毛色认个体，动作来自柜里柜外的日常</span></div>
+    <div class="strip" id="acts"></div>
+  </div>
+</section>
+
+<section class="band col tint" id="scene" data-c="#FFEFB8">
+  <div class="wrap">
+    <h2>一座岛，一台娃娃机</h2>
+    <p class="lede">开局只有一台娃娃机和一台鉴定机。拖动下面的分界线，看几十次夹取之后，空地会变成什么样。</p>
+    <div class="ba" id="ba" style="--p:50%">
+      <img src="a/island-noplayer.webp" alt="建成后的小岛：庭院、菜园、工地和河边小摊都有漏漏在忙" loading="lazy">
+      <img class="pre" src="a/island-empty.webp" alt="开局的小岛：只有一台娃娃机、一台鉴定机和大片空草地" loading="lazy">
+      <span class="lb l">开局：一片空地，一台娃娃机</span><span class="lb r">几十次夹取之后</span>
+      <input type="range" min="0" max="100" value="50" id="baR" aria-label="拖动对比开局和建成后的小岛">
+      <i class="knob" aria-hidden="true"></i>
+    </div>
+    <div class="zones">
+      <figure><img src="a/zone-site.webp" alt="" loading="lazy"><figcaption><b>建造工地</b>包工头、热心帮工、暴走搬运工在这里上班，抱枕型在蘑菇下面睡觉。</figcaption></figure>
+      <figure><img src="a/zone-yard.webp" alt="" loading="lazy"><figcaption><b>安居庭院</b>贴心管家和沉默工匠的地盘：浇菜、种花、晒被子。</figcaption></figure>
+      <figure><img src="a/zone-empty.webp" alt="" loading="lazy"><figcaption><b>待建草地</b>攒够木头和花苗，就在这里盖下一处。</figcaption></figure>
+    </div>
+    <div class="poster"><img src="a/map-poster.webp" alt="小岛导览：01 娃娃机、02 鉴定机、03 安居庭院、04 建造工地、05 待建草地、06 夹取正面特写" loading="lazy"></div>
+    <div class="gal" id="gal">
+      <figure><img src="a/story1.webp" alt="" loading="lazy"><figcaption><b>娃娃机</b>柜子顶上晒着漏漏，滑梯通到岛上，操作台前是你。</figcaption></figure>
+      <figure><img src="a/story2.webp" alt="" loading="lazy"><figcaption><b>柜子里面</b>上下铺、吊桥、工坊，被夹起来的那只还攥着手帕不放。</figcaption></figure>
+      <figure><img src="a/story3.webp" alt="" loading="lazy"><figcaption><b>鉴定机门口</b>刚夹出来的漏漏排队拍照，晾绳上挂满报告。</figcaption></figure>
+      <figure><img src="a/story4.webp" alt="" loading="lazy"><figcaption><b>朋友来盖章</b>红章是鉴定机的，蓝章是朋友留下的。</figcaption></figure>
+      <figure><img src="a/story5.webp" alt="" loading="lazy"><figcaption><b>工地</b>包工头指挥，搬运工扛木头，人形抱枕在蘑菇下睡觉。</figcaption></figure>
+      <figure><img src="a/story6.webp" alt="" loading="lazy"><figcaption><b>好友来访</b>盖好的小屋前喝下午茶，两只漏漏看不对眼。</figcaption></figure>
+    </div>
+    <div class="galnav"><button type="button" id="gPrev" aria-label="上一张">‹</button><button type="button" id="gNext" aria-label="下一张">›</button></div>
+  </div>
+</section>
+
+<section class="band col" id="mini" data-c="#FFD34A" data-i="#FFDE72" data-e="#F0BC22"><img class="flank l edge" src="a/cheer-04.webp" alt=""><img class="flank r" src="a/cheer-02.webp" alt="">
+  <div class="wrap">
+    <h2>漏漏鉴定机</h2>
+    <p class="lede">这是本作的 Mini App：岛上那台黄色机器单独拿出来，就是一个能分享的小程序。选出你看到的样子，拍一张，打印出它的性格报告；朋友打开可以盖章，也可以测测自己是哪一型。</p>
+    <div class="mini">
+      <div class="booth">
+        <div class="studio" id="studio"><img class="sit" id="sit" src="a/luolou-on-stool.webp" alt="坐在凳子上等待拍照的漏漏"><div class="flash" id="flash2"></div></div>
+        <form id="mForm">
+          <p class="lab">它的耳朵</p>
+          <div class="earmini" id="mEar"></div>
+          <p class="lab">被夹起来时</p>
+          <div class="chips" id="mGrab"></div>
+          <p class="lab">掉出来以后</p>
+          <div class="chips" id="mAfter"></div>
+          <div style="margin-top:20px"><button class="btn red" id="mGo" type="submit">拍照鉴定</button></div>
+        </form>
+      </div>
+      <div class="out" id="mOut"><div class="empty">报告会从这里打印出来</div></div>
+    </div>
+    <div class="sub2">
+      <div>
+        <h3>漏漏图鉴 <span id="dexN" style="font-family:var(--body);font-size:15px;color:var(--soft)">0/16</span></h3>
+        <div class="dex" id="dex"></div>
+      </div>
+      <div>
+        <h3>测测你是哪一型</h3>
+        <form class="quiz" id="quiz" style="margin-top:14px"></form>
+        <div id="quizOut"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band col plain" id="loop" data-c="#FFF8EA">
+  <div class="wrap">
+    <h2>夹一次，岛就变一点</h2>
+    <p class="lede">一台机器撑起整个循环：漏漏既是奖品，也是劳动力，干活攒下的娃娃币又回到机器里。</p>
+    <div class="loop">
+      <div class="ring" id="ring">
+        <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="33" fill="none" stroke="currentColor" stroke-opacity=".25" stroke-width="1.2" stroke-dasharray="2.5 2.5"/><path d="M78 30 l3 -5 l2 6z M70 82 l6 0 l-4 4z M22 70 l-3 5 l-2 -6z M30 18 l-6 0 l4 -4z" fill="#E8505B"/></svg>
+        <div class="node" style="left:50%;top:17%"><img src="a/cast-act-dead.webp" alt=""><b>夹</b><small>花 1 枚娃娃币</small></div>
+        <div class="node" style="left:83%;top:50%"><img src="a/ear-curl.webp" alt=""><b>鉴定</b><small>拍照出报告</small></div>
+        <div class="node" style="left:50%;top:83%"><img src="a/cast-act-haul.webp" alt=""><b>干活</b><small>按脾气上岗，攒币</small></div>
+        <div class="node" style="left:17%;top:50%"><img src="a/build-den.webp" alt=""><b>建造</b><small>空地变成家</small></div>
+      </div>
+      <div class="why">
+        <div><h3>报告卡是给人截图的</h3><p>人格测试结果卡本来就是社交平台上最爱被转发的格式。漏漏的报告既是「我夹到的」，也像在说「我」，晒出去不需要解释游戏。</p></div>
+        <div><h3>每一只都不一样</h3><p>同样的耳朵，不同的被夹反应，会落到不同类型；朋友之间自然会比谁夹到了稀有的、谁凑齐了 16 型。</p></div>
+        <div><h3>朋友能接上一手</h3><p>收到报告的人可以盖一个蓝章留言，或者做 4 道题测自己是哪一型。拿到结果的人，会想去岛上找到那只和自己一样的漏漏。</p></div>
+      </div>
+    </div>
+    <div class="ai">
+      <div class="r"><h3>规则决定类型</h3><p>耳朵定两个字，被夹时和掉出来后的表现定另外两个字。16 型是固定映射，同样的漏漏永远是同一型，图鉴才有收集意义。</p></div>
+      <div class="g"><h3>AI 负责写这一只</h3><p>标签和鉴定结论由 AI 根据它的毛色、耳朵和刚才的反应现写，每张报告都只属于这一只。AI 不在时用本地词库兜底，玩法不受影响。</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="finale" aria-label="结尾"><div class="wrap"><div class="txt"><h2>再夹一次？</h2><p>每一只漏漏都不一样。投一枚娃娃币，看看这次掉出来的是谁。</p><a class="btn red" href="#play">回到岛上</a></div><img src="a/machine-hero.webp" alt="草莓红的娃娃机，柜里住着两只漏漏，旁边是黄色滑梯"></div></section>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><g id="townpath" fill="currentColor">
+<rect x="0" y="100" width="1440" height="20"/>
+<path d="M40 100v-40l30-26 30 26v40z"/><ellipse cx="62" cy="30" rx="6" ry="14"/><ellipse cx="78" cy="30" rx="6" ry="14"/>
+<circle cx="150" cy="70" r="28"/><rect x="146" y="80" width="8" height="22"/>
+<path d="M210 100v-70h110v70z"/><rect x="225" y="42" width="80" height="40" rx="8" fill-opacity=".0"/><path d="M200 34h130l-10-18h-110z"/><ellipse cx="252" cy="12" rx="7" ry="14"/><ellipse cx="278" cy="12" rx="7" ry="14"/><path d="M320 100c20 0 30-30 50-30v30z"/>
+<path d="M410 100v-34h60v34z"/><circle cx="426" cy="56" r="14"/><circle cx="454" cy="56" r="14"/>
+<path d="M520 100l40-60 40 60z"/><path d="M540 100l40-80 40 80z"/>
+<path d="M660 100v-44l40-30 40 30v44z"/><circle cx="700" cy="50" r="10" fill-opacity="0"/>
+<ellipse cx="800" cy="88" rx="26" ry="18"/><ellipse cx="788" cy="66" rx="6" ry="14"/><ellipse cx="812" cy="66" rx="6" ry="14"/>
+<circle cx="880" cy="66" r="34"/><rect x="876" y="80" width="8" height="22"/>
+<path d="M950 100v-60h80v60z"/><path d="M940 44h100l-50-30z"/>
+<ellipse cx="1090" cy="92" rx="20" ry="12"/><ellipse cx="1076" cy="88" rx="5" ry="16" transform="rotate(30 1076 88)"/><ellipse cx="1104" cy="88" rx="5" ry="16" transform="rotate(-30 1104 88)"/>
+<path d="M1140 100l34-56 34 56z"/>
+<path d="M1230 100v-50l36-28 36 28v50z"/><ellipse cx="1256" cy="20" rx="6" ry="13"/><ellipse cx="1276" cy="20" rx="6" ry="13"/>
+<circle cx="1350" cy="70" r="26"/><circle cx="1400" cy="76" r="22"/>
+</g></defs></svg>
+<div class="townband" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="xMidYMax slice"><use href="#townpath"/></svg></div>
+<footer><img src="a/title-logo.webp" alt="">AI 小世界设计题 · 网页原型。<a href="research/" style="color:#FFD34A">前期研究 →</a> 插画为项目自绘设定，游戏进度只保存在当前浏览器。</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+<script>
+{
+/* ===== 数据 ===== */
+const AXES=[["跑","蹲"],["干","躺"],["贴","独"],["想","空"]];
+const TYPES={"跑干贴想":["包工头","工地"],"跑干贴空":["热心帮工","工地帮手"],"跑干独想":["独行发明家","工坊"],"跑干独空":["暴走搬运工","搬运资源"],"跑躺贴想":["气氛组组长","门口迎客"],"跑躺贴空":["快乐小狗","门口迎客"],"跑躺独想":["散步哲学家","岛上巡逻"],"跑躺独空":["一阵风","到处跑腿"],"蹲干贴想":["贴心管家","小屋管家"],"蹲干贴空":["老实打工人","搬砖"],"蹲干独想":["怪人艺术家","装饰"],"蹲干独空":["沉默工匠","种花"],"蹲躺贴想":["军师","监工"],"蹲躺贴空":["黏人挂件","陪你"],"蹲躺独想":["窗边思考者","观景台"],"蹲躺独空":["人形抱枕","小屋里"]};
+const ORDER=Object.keys(TYPES);
+const EARS={up:{n:"竖耳",a:"跑 · 空",ax:{0:0,3:1},d:"精力旺盛、脑袋空空，听不懂但跑得最快。"},knot:{n:"打结耳",a:"跑 · 想",ax:{0:0,3:0},d:"闲不下来，脑子里还一直在盘算，常常自己把耳朵绕成了结。"},curl:{n:"卷卷耳",a:"蹲 · 想",ax:{0:1,3:0},d:"能坐一下午，满脑子想法，只是没人看得懂。"},droop:{n:"耷拉耳",a:"蹲 · 空",ax:{0:1,3:1},d:"省电模式常开，原地待机就是它最大的快乐。"}};
+const EAR_IMG={up:"ear-up",knot:"ear-knot",curl:"ear-curl",droop:"ear-droop"};
+const LUO=[["ear-up","up","奶白"],["ear-knot","knot","奶白"],["ear-curl","curl","奶白"],["ear-droop","droop","奶白"],["cast-coat-pink","up","粉粉"],["cast-coat-mint","up","薄荷绿"],["cast-coat-yellow","up","奶黄"],["cast-coat-taro","up","芋泥紫"]];
+const GRAB=[["装死",{0:1,1:1}],["原地转圈",{0:0,3:1}],["抱着爪子不放",{2:0}],["自己跳向出口",{0:0,1:0}],["一直盯着你",{3:0,2:1}]];
+const AFTER=[["马上去搬木头",{1:0}],["找地方躺下",{1:1,0:1}],["跟在你身后",{2:0}],["自己走开了",{2:1}],["盯着鉴定机发呆",{3:0,0:1}]];
+const TAGS={"跑":["#停不下来","#满岛乱窜","#精力过剩"],"蹲":["#原地待机","#一坐一下午","#省电模式"],"干":["#自觉开工","#手比脑快","#加班不喊累"],"躺":["#能躺不坐","#摸鱼专家","#一推一动"],"贴":["#跟屁虫","#见谁都蹭","#怕孤单"],"独":["#不接受沟通","#自己玩","#社交电量1%"],"想":["#有主见","#审美超前","#拒绝修改"],"空":["#脑袋空空","#听不懂但照做","#无忧无虑"]};
+const VERD={"跑":"拍照时试图从出纸口逃跑两次。","蹲":"坐上凳子后一动不动，机器一度以为没放东西。","干":"照片还没洗出来，它已经开始帮忙擦镜头了。","躺":"全程躺平，建议不要安排重活。","贴":"一直贴着玻璃找你，离开视线会不安。","独":"对鉴定机的提问一律不予回应。","想":"有很多自己的想法，只是没人看得懂。","空":"脑子里大概什么都没有，但看起来很快乐。"};
+
+/* ===== 工具 ===== */
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const $=(s,el)=>(el||document).querySelector(s);
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const today=()=>{const t=new Date();return `${t.getFullYear()}.${t.getMonth()+1}.${t.getDate()}`};
+const opposite=code=>code.split("").map((ch,i)=>AXES[i][AXES[i][0]===ch?1:0]).join("");
+const earOf=code=>Object.keys(EARS).find(k=>AXES[0][EARS[k].ax[0]]===code[0]&&AXES[3][EARS[k].ax[3]]===code[3]);
+function scoreType(ear,g,a){const s=[0,0,0,0];const add=m=>Object.entries(m).forEach(([ax,side])=>{s[ax]+=side===0?-1:1});add(GRAB[g][1]);add(AFTER[a][1]);return s.map((v,i)=>(i===0||i===3)?AXES[i][EARS[ear].ax[i]]:AXES[i][v===0?(Math.random()<.5?0:1):(v<0?0:1)]).join("")}
+const typeImg=code=>"type-"+String(ORDER.indexOf(code)+1).padStart(2,"0");
+const sitImg=ear=>ear==="curl"?"luolou-on-stool":EAR_IMG[ear];
+function fallback(code){const c=code.split("");return{tags:[pick(TAGS[c[1]]),pick(TAGS[c[2]]),pick(TAGS[c[3]])],verdict:VERD[c[0]]+VERD[pick(c.slice(1))]}}
+
+let sampleP=null,aiOff=false;
+async function aiCopy(r){
+  if(aiOff)return null;
+  if(!sampleP)sampleP=(window.claude&&typeof window.claude.use==="function")?window.claude.use("sample").catch(()=>null):Promise.resolve(null);
+  const sample=await sampleP;if(!sample)return null;
+  const prompt=`你是游戏《漏漏娃娃机》里的「鉴定机」。漏漏是一种像兔子的原创小生物：团子身体、奶油色大耳朵、一双大白眼，性格写在耳朵上。
+请为这只刚夹到的漏漏写鉴定报告的文字部分，语气一本正经但有点好笑，像人格测试结果卡，适合年轻女性玩家截图分享。不要恶意、不要低俗。
+这只漏漏：毛色${r.coat}，${EARS[r.ear].n}。被夹起来时：${GRAB[r.g][0]}；掉出来以后：${AFTER[r.a][0]}。
+鉴定类型：${r.code}（${TYPES[r.code][0]}）。四个字依次是 精力(跑/蹲)、干活(干/躺)、社交(贴/独)、脑子(想/空)。
+只输出 JSON：{"tags":["#标签1","#标签2","#标签3"],"verdict":"鉴定结论"}。每个标签以#开头，2到6个汉字；鉴定结论一句话，不超过36个汉字，要用到它的外形或被夹时的表现。`;
+  try{const out=await sample.json(prompt,{modelTier:"quick"});
+    if(out&&Array.isArray(out.tags)&&out.tags.length>=3&&typeof out.verdict==="string")return{tags:out.tags.slice(0,3).map(t=>String(t).slice(0,10)),verdict:out.verdict.slice(0,60)};
+  }catch(e){if(e&&(e.code==="not_granted"||e.code==="rate_limited"))aiOff=true}
+  return null;
+}
+
+/* ===== 报告 ===== */
+let serial=store.get("luo-serial",0);
+const dex=store.get("luo-dex",{});
+function makeReport(spr,ear,coat,g,a){
+  const code=scoreType(ear,g,a);const fb=fallback(code);serial++;store.set("luo-serial",serial);
+  return{no:"No."+String(serial).padStart(3,"0"),date:today(),spr,ear,coat,g,a,code,tags:fb.tags,verdict:fb.verdict,loading:true,visitor:""};
+}
+function cardHTML(r,human){
+  const[name,place]=TYPES[r.code];const opp=TYPES[opposite(r.code)][0];
+  return `<div class="card print"><div class="top">${human?"人类鉴定报告":"漏漏鉴定报告"}<span>${esc(r.no)}</span></div>
+  <div class="date">${human?"鉴定日期":"抓捕日期"}：${esc(r.date)}</div>
+  <div class="pic"><img src="a/${typeImg(r.code)}.webp" alt=""></div>
+  <div class="code">${esc(r.code)}</div><div class="tname">${esc(name)}</div>
+  <div class="tags">${r.tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div>
+  <p class="verdict ${r.loading?"loading":""}">${r.loading?"鉴定机正在写结论……":"鉴定结论："+esc(r.verdict)}</p><hr>
+  <dl><dt>适合安排在</dt><dd>${esc(place)}</dd><dt>不建议同住</dt><dd>${esc(opp)}</dd><dt>看耳朵</dt><dd>${EARS[r.ear].n} · ${EARS[r.ear].a}</dd>${human?"":`<dt>被夹时</dt><dd>${esc(GRAB[r.g][0])}</dd>`}</dl>
+  ${r.visitor?`<div class="visitor">朋友盖章：${esc(r.visitor)}</div>`:""}<div class="stamp">${human?"已测":"已鉴定"}</div></div>`;
+}
+async function fillAI(r,rerender){
+  const ai=await Promise.race([aiCopy(r),new Promise(res=>setTimeout(()=>res(null),12000))]);
+  if(ai){r.tags=ai.tags;r.verdict=ai.verdict}r.loading=false;rerender();
+}
+function addDex(r){if(!dex[r.code]){dex[r.code]={no:r.no,date:r.date,spr:r.spr};store.set("luo-dex",dex)}renderDex()}
+async function saveCard(el,r,say){
+  if(!window.htmlToImage){say("可以长按或截图保存报告卡");return}
+  const dl=window.claude&&window.claude.use?await window.claude.use("downloads").catch(()=>null):null;
+  if(!dl){try{const blob=await window.htmlToImage.toBlob(el,{pixelRatio:2,skipFonts:true,backgroundColor:"#FBF3E4"});const u=URL.createObjectURL(blob);const l=document.createElement("a");l.href=u;l.download=`漏漏鉴定报告-${r.code}.png`;document.body.append(l);l.click();l.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);say("已保存；手机上也可以长按报告卡截图")}catch(e){say("保存没有成功，可以截图保存报告卡")}return}
+  try{const blob=await window.htmlToImage.toBlob(el,{pixelRatio:2,skipFonts:true,backgroundColor:"#FBF3E4"});await dl.save({filename:`漏漏鉴定报告-${r.code}.png`,data:blob});say("已保存")}
+  catch(e){say(e&&e.code==="declined"?"已取消保存":"保存没有成功，可以截图保存")}
+}
+async function copyShare(r,say){
+  const[name,place]=TYPES[r.code];
+  const txt=`我在漏漏娃娃机里夹到一只「${r.code} · ${name}」\n${r.tags.join(" ")}\n鉴定结论：${r.verdict}\n适合安排在：${place}\n你是哪一型？来岛上测测`;
+  try{await navigator.clipboard.writeText(txt);say("分享文案已复制")}catch(e){say("复制没有成功，可以截图分享")}
+}
+
+/* ===== 认识漏漏 ===== */
+const earKeys=Object.keys(EARS);
+$("#earPick").innerHTML=earKeys.map((k,i)=>`<button type="button" data-e="${k}" aria-pressed="${i===0}"><img src="a/${EAR_IMG[k]}.webp" alt="">${EARS[k].n}</button>`).join("");
+function showEar(k){
+  $("#earBig").src=`a/${EAR_IMG[k]}.webp`;$("#earBig").alt=EARS[k].n+"漏漏";$("#earTag").textContent=EARS[k].n;
+  const list=ORDER.filter(c=>earOf(c)===k).map(c=>TYPES[c][0]);
+  $("#earInfo").innerHTML=`<b>${EARS[k].n} = ${EARS[k].a}</b><br>${EARS[k].d}<br><span style="color:var(--soft)">这类耳朵可能是：${list.join("、")}</span>`;
+  document.querySelectorAll("#earPick button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.e===k));
+}
+$("#earPick").addEventListener("click",e=>{const b=e.target.closest("button");if(b)showEar(b.dataset.e)});
+showEar("up");
+const strip=(id,items)=>{$(id).innerHTML=items.map(([f,n])=>`<figure><img src="a/${f}.webp" alt="" loading="lazy"><figcaption>${n}</figcaption></figure>`).join("")};
+strip("#faces",[["cast-face-blank","呆萌"],["cast-face-dizzy","发疯"],["cast-face-hungry","贪吃"],["cast-face-shock","惊讶"],["cast-face-sleep","犯困"],["cast-face-pout","赌气"],["cast-face-joy","狂喜"],["cast-face-sob","爆哭"]]);
+strip("#wears",[["cast-wear-mushroom","蘑菇帽 · 种花"],["cast-wear-goggles","护目镜 · 搬运"],["cast-wear-wizard","巫师帽 · 军师"],["cast-wear-garland","花冠 · 迎客"],["cast-wear-beret","贝雷帽 · 装饰"],["cast-wear-scarf","围巾 · 巡逻"]]);
+strip("#acts",[["cast-coat-cream","奶白"],["cast-coat-pink","粉粉"],["cast-coat-mint","薄荷绿"],["cast-coat-yellow","奶黄"],["cast-coat-taro","芋泥紫"],["cast-act-dead","悬空装死"],["cast-act-hug","抱住抓爪"],["cast-act-jump","蹦起来"],["cast-act-glass","贴玻璃"],["cast-act-flat","趴下来"],["cast-act-carry","抱紧花盆"],["cast-act-haul","搬木头"]]);
+
+const baR=$("#baR");baR.addEventListener("input",()=>$("#ba").style.setProperty("--p",baR.value+"%"));
+
+/* ===== 漏漏图标纹理 ===== */
+function patURL(ic,ey){
+  const eye=(x,y)=>`<circle cx="${x}" cy="${y}" r="5" fill="none" stroke="${ey}" stroke-width="2.6"/><circle cx="${x+1.6}" cy="${y-1.6}" r="1.9" fill="${ey}"/>`;
+  const sleepy=(x,y)=>`<path d="M${x-5} ${y}h10" stroke="${ey}" stroke-width="2.6" stroke-linecap="round"/>`;
+  const mouth=(x,y)=>`<path d="M${x-3} ${y}q3 3 6 0" fill="none" stroke="${ey}" stroke-width="2.2" stroke-linecap="round"/>`;
+  const head=`<ellipse cx="30" cy="38" rx="22" ry="17" fill="${ic}"/>`;
+  const I={
+   up:`<ellipse cx="21" cy="16" rx="6.5" ry="14" fill="${ic}"/><ellipse cx="39" cy="16" rx="6.5" ry="14" fill="${ic}"/>${head}${eye(22,37)}${eye(38,37)}${mouth(30,45)}`,
+   knot:`<path d="M20 28C8 8 26 2 30 14C34 2 52 8 40 28z" fill="${ic}"/><circle cx="30" cy="14" r="6" fill="${ey}" opacity=".5"/>${head}${eye(22,37)}${eye(38,37)}${mouth(30,45)}`,
+   curl:`<circle cx="15" cy="20" r="10" fill="${ic}"/><circle cx="45" cy="20" r="10" fill="${ic}"/><path d="M15 20m-4 0a4 4 0 1 1 4 4" fill="none" stroke="${ey}" stroke-width="2.4" stroke-linecap="round"/><path d="M45 20m4 0a4 4 0 1 0-4 4" fill="none" stroke="${ey}" stroke-width="2.4" stroke-linecap="round"/>${head}${eye(22,37)}${eye(38,37)}${mouth(30,45)}`,
+   droop:`<ellipse cx="10" cy="40" rx="6.5" ry="15" fill="${ic}" transform="rotate(25 10 40)"/><ellipse cx="50" cy="40" rx="6.5" ry="15" fill="${ic}" transform="rotate(-25 50 40)"/>${head}${sleepy(22,37)}${sleepy(38,37)}${mouth(30,45)}`,
+   coin:`<circle cx="30" cy="30" r="20" fill="${ic}"/><circle cx="30" cy="30" r="14" fill="none" stroke="${ey}" stroke-width="2.4"/><ellipse cx="26" cy="22" rx="3" ry="6" fill="${ey}"/><ellipse cx="34" cy="22" rx="3" ry="6" fill="${ey}"/><ellipse cx="30" cy="33" rx="8" ry="6" fill="${ey}"/>`,
+   claw:`<rect x="20" y="4" width="20" height="12" rx="4" fill="${ic}"/><rect x="28" y="0" width="4" height="6" fill="${ic}"/><path d="M24 16C10 26 12 44 20 52M36 16C50 26 48 44 40 52" fill="none" stroke="${ic}" stroke-width="6" stroke-linecap="round"/>`,
+   star:`<path d="M30 6l6 18 18 6-18 6-6 18-6-18-18-6 18-6z" fill="${ic}"/>`
+  };
+  const place=[["up",30,30,-12,1.15],["coin",160,40,10,.8],["curl",95,120,8,1.1],["star",225,105,0,.55],["knot",200,190,-10,1.1],["claw",40,190,14,.85],["droop",120,230,6,1.05],["star",70,90,20,.4],["coin",240,250,-6,.6]];
+  const g=place.map(([k,x,y,r,sc])=>`<g transform="translate(${x} ${y}) rotate(${r}) scale(${sc}) translate(-30 -30)">${I[k]}</g>`).join("");
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="280" height="280" viewBox="0 0 280 280">${g}${g.replace(/translate\((\d+) (\d+)\)/g,(m,x,y)=>`translate(${+x-280} ${y})`)}${g.replace(/translate\((\d+) (\d+)\)/g,(m,x,y)=>`translate(${x} ${+y-280})`)}</svg>`;
+  return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+}
+document.querySelectorAll(".col").forEach(sec=>{
+  sec.style.setProperty("--c",sec.dataset.c);if(!sec.dataset.i)return;sec.style.setProperty("--pat",patURL(sec.dataset.i,sec.dataset.e));
+  const p=document.createElement("div");p.className="pat";p.setAttribute("aria-hidden","true");p.innerHTML="<i></i>";sec.prepend(p);
+});
+if(!reduce){
+  const cols=[...document.querySelectorAll(".col")];
+  addEventListener("scroll",()=>{for(const c of cols){const r=c.getBoundingClientRect();if(r.bottom>0&&r.top<innerHeight)c.style.setProperty("--py",(r.top*-.15).toFixed(1))}},{passive:true});
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.15});
+  document.querySelectorAll(".col .wrap>h2,.col .wrap>.lede,.step,.why>div,.zones figure,.ai>div,.meet,.mini,.ba,.poster").forEach(el=>{el.classList.add("reveal");io.observe(el)});
+}
+document.querySelectorAll(".flank").forEach(f=>f.addEventListener("click",()=>{f.style.animation="none";void f.offsetWidth;f.style.animation="hop .5s"}));
+/* 画廊 */
+const gal=$("#gal");const gstep=d=>{const f=gal.querySelector("figure");gal.scrollBy({left:d*(f.offsetWidth+18),behavior:"smooth"})};
+$("#gPrev").onclick=()=>gstep(-1);$("#gNext").onclick=()=>gstep(1);
+gal.tabIndex=0;gal.addEventListener("keydown",e=>{if(e.key==="ArrowRight")gstep(1);if(e.key==="ArrowLeft")gstep(-1)});
+
+/* ===== Mini App ===== */
+let mEar="curl";
+$("#mEar").innerHTML=earKeys.map((k,i)=>`<button type="button" data-e="${k}" aria-pressed="${k==="curl"}" aria-label="${EARS[k].n}"><img src="a/${EAR_IMG[k]}.webp" alt=""></button>`).join("");
+$("#mEar").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;mEar=b.dataset.e;$("#sit").src=`a/${sitImg(mEar)}.webp`;document.querySelectorAll("#mEar button").forEach(x=>x.setAttribute("aria-pressed",x===b))});
+const chips=(el,name,items,ck)=>{$(el).innerHTML=items.map((it,i)=>`<label><input type="radio" name="${name}" value="${i}" ${i===ck?"checked":""}><span>${it[0]}</span></label>`).join("")};
+chips("#mGrab","mg",GRAB,0);chips("#mAfter","ma",AFTER,0);
+function renderMini(r){
+  const out=$("#mOut");
+  out.innerHTML=cardHTML(r)+`<div class="cardact"><button class="btn" type="button" data-k="save">保存报告卡</button><button class="btn ghost" type="button" data-k="copy">复制分享文案</button><button class="btn ghost" type="button" data-k="visit">朋友盖章</button></div>
+  <form class="stampf" id="stampF"><label style="position:absolute;left:-9999px" for="stampI">朋友留言</label><input id="stampI" maxlength="16" placeholder="朋友想说的一句话"><button class="btn red" type="submit">盖章</button></form><p class="note" id="mNote" role="status">朋友打开你的报告，可以在这里盖一个蓝章</p>`;
+  const say=t=>{$("#mNote").textContent=t};
+  out.querySelector('[data-k=save]').onclick=()=>saveCard(out.querySelector(".card"),r,say);
+  out.querySelector('[data-k=copy]').onclick=()=>copyShare(r,say);
+  out.querySelector('[data-k=visit]').onclick=()=>{$("#stampF").classList.add("on");$("#stampI").focus()};
+  $("#stampF").onsubmit=e=>{e.preventDefault();const v=$("#stampI").value.trim();if(!v){say("先写一句再盖章");return}r.visitor=v;renderMini(r);say("蓝章盖好了")};
+}
+$("#mForm").addEventListener("submit",async e=>{
+  e.preventDefault();const g=+$('input[name=mg]:checked').value,a=+$('input[name=ma]:checked').value;
+  const btn=$("#mGo");btn.disabled=true;$("#studio").classList.add("scan");
+  await new Promise(r=>setTimeout(r,900));
+  $("#flash2").classList.remove("on");void $("#flash2").offsetWidth;$("#flash2").classList.add("on");$("#studio").classList.remove("scan");
+  const r=makeReport(EAR_IMG[mEar],mEar,"奶白",g,a);renderMini(r);addDex(r);
+  await fillAI(r,()=>renderMini(r));btn.disabled=false;
+});
+function renderDex(){
+  const n=Object.keys(dex).length;$("#dexN").textContent=`${n}/16`;
+  $("#dex").innerHTML=ORDER.map(c=>{const got=dex[c];return `<div class="${got?"":"lock"}"><img src="a/${typeImg(c)}.webp" alt="" loading="lazy"><b>${got?TYPES[c][0]:"？？？"}</b><small>${c}</small></div>`}).join("");
+}
+renderDex();
+const QUIZ=[["周末醒来，你通常……",["马上出门，不能浪费一天","继续躺着，起床是下午的事"]],["收到一个新任务，你会……",["立刻开干，早做完早安心","先放着，最后一天再说"]],["一个人吃饭的时候，你……","想拉个人一起，不然吃不香|很享受，终于清静了".split("|")],["朋友问你在想什么，你……",["脑子里有一整套计划","其实什么都没想"]]];
+$("#quiz").innerHTML=QUIZ.map((q,i)=>`<fieldset><legend>${i+1}. ${q[0]}</legend><div class="chips">${q[1].map((o,j)=>`<label><input type="radio" name="q${i}" value="${j}"><span>${o}</span></label>`).join("")}</div></fieldset>`).join("")+`<button class="btn" type="submit">打印我的报告</button> <span id="qErr" style="color:var(--berry);font-size:14px" role="status"></span>`;
+$("#quiz").addEventListener("submit",e=>{
+  e.preventDefault();const ans=QUIZ.map((_,i)=>$(`input[name=q${i}]:checked`));
+  if(ans.some(x=>!x)){$("#qErr").textContent="四道题都选完才能打印";return}$("#qErr").textContent="";
+  const code=ans.map((x,i)=>AXES[i][+x.value]).join("");const ear=earOf(code);const fb=fallback(code);
+  const r={no:"访客",date:today(),spr:EAR_IMG[ear],ear,code,tags:fb.tags,verdict:`你最像的漏漏是「${TYPES[code][0]}」。`+VERD[code[1]],loading:false,g:0,a:0};
+  $("#quizOut").innerHTML=`<div style="margin-top:16px">${cardHTML(r,true)}</div>`;
+});
+
+/* ===== 首屏视差 ===== */
+const heroBg=$("#heroBg");
+if(!reduce)addEventListener("scroll",()=>{const y=scrollY;if(y<900)heroBg.style.transform=`translateY(${y*.25}px) scale(${1+y*.0002})`},{passive:true});
+
+/* ===== 游戏 ===== */
+const stage=$("#stage"),cv=$("#cv"),ctx=cv.getContext("2d");
+const IMGS={};const need=["island-noplayer","cabinet-world","studio-world","occ-machine","occ-booth","player-front","player-back","player-side-a","player-side-b","luolou-hop-a","luolou-hop-b","claw-open","claw-closed","res-wood","res-sprout","res-coin","luolou-on-stool","build-den","build-flowers","build-bench",...new Set(LUO.map(l=>l[0])),...ORDER.map(typeImg)];
+let loaded=0;need.forEach(n=>{const im=new Image();im.onload=()=>{loaded++};im.src=`a/${n}.webp`;IMGS[n]=im});
+const S={mode:"island",coins:5,wood:0,sprout:0,res:[],builds:[],pending:null,t:0};
+const hud=(id,v)=>{const el=$(id);el.querySelector("b").textContent=v;el.classList.remove("pop");void el.offsetWidth;el.classList.add("pop")};
+const syncHud=()=>{hud("#hCoin",S.coins);hud("#hWood",S.wood);hud("#hSprout",S.sprout);hud("#hRes",S.res.length)};
+let toastT;const toast=t=>{const el=$("#toast");el.textContent=t;el.classList.add("on");clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove("on"),2600)};
+const panel=$("#panel"),act=$("#act");
+const showPanel=h=>{panel.innerHTML=h;panel.classList.add("on")};const hidePanel=()=>{panel.classList.remove("on");panel.innerHTML="";stage.focus({preventScroll:true})};
+
+/* 画布尺寸 */
+let W=0,H=0,DPR=1;
+function resize(){const r=stage.getBoundingClientRect();DPR=Math.min(2,devicePixelRatio||1);W=r.width;H=r.height;cv.width=W*DPR;cv.height=H*DPR}
+const ro=new ResizeObserver(resize);ro.observe(stage);resize();
+
+/* 几何 */
+const inPoly=(p,x,y)=>{let c=false;for(let i=0,j=p.length-1;i<p.length;j=i++){const[xi,yi]=p[i],[xj,yj]=p[j];if((yi>y)!==(yj>y)&&x<(xj-xi)*(y-yi)/(yj-yi)+xi)c=!c}return c};
+const WALK=[[240,445],[590,440],[790,450],[1150,282],[1265,285],[1270,330],[1205,440],[1200,575],[1400,575],[1640,610],[1600,690],[1450,790],[1350,880],[1080,885],[660,750],[565,715],[470,770],[380,720],[300,770],[60,720],[40,640],[120,590],[300,600],[330,560],[420,540],[400,480]];
+const MACH=[[795,600],[800,470],[860,290],[1140,240],[1205,470],[1200,625],[1080,640],[1040,672],[935,672],[925,605]];
+const BOOTH=[[600,630],[602,470],[620,452],[780,458],[785,640],[700,645]];
+const BLOCK=[MACH,BOOTH,[[100,560],[290,540],[300,700],[110,705]],[[280,470],[420,500],[440,640],[380,650],[300,610]]];
+const FIELD=[[1080,660],[1230,600],[1560,630],[1420,780],[1300,850],[1060,850],[980,780]];
+const ok=(x,y)=>inPoly(WALK,x,y)&&!BLOCK.some(b=>inPoly(b,x,y));
+const SPOT={claw:[885,642],booth:[652,668],build:[1300,705]};
+const BUILD_AT=[[1250,690,"build-den"],[1385,700,"build-flowers"],[1160,780,"build-bench"],[1330,800,"build-den"],[1480,650,"build-flowers"],[1060,760,"build-bench"]];
+const P={x:560,y:690,face:1,dir:"down",moving:false,target:null,auto:null,step:0};
+const keys=new Set();
+
+/* 镜头 */
+let cam={s:1,x:0,y:0};
+function islandCam(){const s=Math.max(W/1672,H/941);const vw=W/s,vh=H/941*941/s;cam.s=s;cam.x=Math.max(0,Math.min(1672-vw,P.x-vw/2));cam.y=Math.max(0,Math.min(941-H/s,P.y-H/s/2))}
+function fitCam(iw,ih){const s=Math.min(W/iw,H/ih);return{s,ox:(W-iw*s)/2,oy:(H-ih*s)/2}}
+const toImg=(sx,sy)=>[sx/cam.s+cam.x,sy/cam.s+cam.y];
+
+/* 互动提示按钮 */
+let actKey="";
+function setAct(key,html){if(actKey===key)return;actKey=key;act.innerHTML=html}
+function nearSpot(){for(const k in SPOT){const[x,y]=SPOT[k];if(Math.hypot(P.x-x,P.y-y)<70)return k}return null}
+function interact(k){
+  if(k==="claw")enterClaw();
+  else if(k==="booth"){if(S.pending)enterBooth();else{toast("鉴定机：先去娃娃机夹一只漏漏");$("#mini").scrollIntoView({behavior:reduce?"auto":"smooth"})}}
+  else if(k==="build")tryBuild();
+}
+act.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const k=b.dataset.k;
+  if(k==="claw"||k==="booth"||k==="build")interact(k);
+  else if(clawCtl[k])clawCtl[k]();
+  else if(k==="shoot")shoot();
+  else if(k==="home")goIsland();
+});
+
+function tryBuild(){
+  if(S.builds.length>=BUILD_AT.length){toast("草地已经盖满了");return}
+  if(S.wood<3||S.sprout<1){toast(`盖一处要 3 木头 + 1 花苗，现在 ${S.wood} 木头 · ${S.sprout} 花苗`);return}
+  S.wood-=3;S.sprout-=1;S.builds.push({at:BUILD_AT[S.builds.length],t:0});syncHud();toast("草地上多了一处新东西");
+}
+
+/* 居民 */
+function randField(){for(let i=0;i<40;i++){const x=980+Math.random()*580,y=600+Math.random()*250;if(inPoly(FIELD,x,y)&&ok(x,y))return[x,y]}return[1250,720]}
+function addResident(r){const[x,y]=[SPOT.booth[0]+30,SPOT.booth[1]+10];S.res.push({r,x,y,tx:x,ty:y,wait:0,coin:8+Math.random()*4,hop:Math.random()*6});syncHud()}
+const floats=[];
+function updateRes(dt){
+  for(const m of S.res){
+    const d=Math.hypot(m.tx-m.x,m.ty-m.y);
+    if(d<4){m.wait-=dt;if(m.wait<=0){[m.tx,m.ty]=randField();m.wait=1.5+Math.random()*3}}
+    else{const sp=m.r.code[0]==="跑"?70:38;const nx=m.x+(m.tx-m.x)/d*sp*dt,ny=m.y+(m.ty-m.y)/d*sp*dt;if(ok(nx,ny)){m.face=Math.sign(m.tx-m.x)||m.face;m.x=nx;m.y=ny;m.hop+=dt*9}else{[m.tx,m.ty]=randField()}}
+    m.coin-=dt;if(m.coin<=0){m.coin=m.r.code[1]==="干"?9:14;S.coins++;let txt="+1 娃娃币";if(m.r.code[1]==="干"&&Math.random()<.5){S.wood++;txt+=" +1 木头"}syncHud();floats.push({x:m.x,y:m.y-70,t:0,txt})}
+  }
+  for(const f of floats)f.t+=dt;while(floats.length&&floats[0].t>1.6)floats.shift();
+}
+
+/* 小岛 */
+function updateIsland(dt){
+  let dx=0,dy=0;
+  if(keys.has("ArrowLeft")||keys.has("a"))dx--;if(keys.has("ArrowRight")||keys.has("d"))dx++;
+  if(keys.has("ArrowUp")||keys.has("w"))dy--;if(keys.has("ArrowDown")||keys.has("s"))dy++;
+  const sp=190;
+  if(dx||dy){P.target=null;P.auto=null;const l=Math.hypot(dx,dy);move(dx/l*sp*dt,dy/l*sp*dt)}
+  else if(P.target){const[tx,ty]=P.target;const d=Math.hypot(tx-P.x,ty-P.y);if(d<5){P.target=null;P.moving=false;if(P.auto){const a=P.auto;P.auto=null;interact(a)}}else{const moved=move((tx-P.x)/d*Math.min(sp*dt,d),(ty-P.y)/d*Math.min(sp*dt,d));if(!moved){P.target=null;if(P.auto&&nearSpot()===P.auto){const a=P.auto;P.auto=null;interact(a)}}}}
+  else P.moving=false;
+  if(S.pending){const f=S.pending.f;const d=Math.hypot(P.x-f.x,P.y-f.y);if(d>55){f.x+=(P.x-f.x)*dt*3;f.y+=(P.y+8-f.y)*dt*3;f.hop+=dt*10}}
+  updateRes(dt);
+  for(const b of S.builds)b.t+=dt;
+  if(S.mode!=="island")return;
+  const k=nearSpot();
+  if(k==="claw")setAct("claw",`<button class="btn red" data-k="claw">夹一把 · 1 娃娃币</button>`);
+  else if(k==="booth")setAct("booth",`<button class="btn" data-k="booth">${S.pending?"带它去鉴定":"鉴定机"}</button>`);
+  else if(k==="build")setAct("build",`<button class="btn" data-k="build">在草地上盖东西 · 3 木头 + 1 花苗</button>`);
+  else setAct("","");
+}
+function move(dx,dy){
+  P.moving=true;if(dx)P.face=Math.sign(dx);P.dir=Math.abs(dx)>=Math.abs(dy)*.8?"side":(dy<0?"up":"down");
+  if(ok(P.x+dx,P.y+dy)){P.x+=dx;P.y+=dy}else if(ok(P.x+dx,P.y)){P.x+=dx}else if(ok(P.x,P.y+dy)){P.y+=dy}else{P.moving=false;return false}
+  P.step+=Math.hypot(dx,dy)*.06;return true;
+}
+function shadow(x,y,w){ctx.fillStyle="rgba(59,42,34,.18)";ctx.beginPath();ctx.ellipse(x,y,w,w*.32,0,0,Math.PI*2);ctx.fill()}
+function sprite(img,x,y,w,flip,hop,rot){if(!img.complete||!img.naturalWidth)return;const h=w*img.naturalHeight/img.naturalWidth;ctx.save();ctx.translate(x,y-(hop||0));if(flip)ctx.scale(-1,1);if(rot)ctx.rotate(rot);ctx.drawImage(img,-w/2,-h*.96,w,h);ctx.restore()}
+function pill(x,y,txt,bg,fg){ctx.font=`18px ${getComputedStyle(document.body).getPropertyValue("--disp")||"sans-serif"}`;const w=ctx.measureText(txt).width+26;ctx.fillStyle=bg;ctx.strokeStyle="#3B2A22";ctx.lineWidth=2.5;ctx.beginPath();ctx.roundRect(x-w/2,y-17,w,34,17);ctx.fill();ctx.stroke();ctx.fillStyle=fg;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(txt,x,y+1)}
+function drawIsland(){
+  islandCam();ctx.setTransform(DPR*cam.s,0,0,DPR*cam.s,-cam.x*cam.s*DPR,-cam.y*cam.s*DPR);
+  ctx.drawImage(IMGS["island-noplayer"],0,0,1672,941);
+  const pulse=(Math.sin(S.t*4)+1)/2;
+  for(const k of["claw","booth","build"]){if(k==="build"&&S.builds.length>=BUILD_AT.length)continue;const[x,y]=SPOT[k];ctx.strokeStyle=`rgba(255,201,60,${.5+pulse*.5})`;ctx.lineWidth=4;ctx.beginPath();ctx.ellipse(x,y+8,40+pulse*8,13+pulse*3,0,0,Math.PI*2);ctx.stroke()}
+  const list=[];
+  list.push({y:600,f:()=>ctx.drawImage(IMGS["occ-machine"],795,170)});
+  list.push({y:640,f:()=>ctx.drawImage(IMGS["occ-booth"],598,440)});
+  for(const b of S.builds){const[x,y,n]=b.at;const s=Math.min(1,b.t*3);list.push({y,f:()=>{shadow(x,y,40);sprite(IMGS[n],x,y,110*(0.4+0.6*s)+Math.sin(b.t*20)*(1-s)*8,false)}})}
+  for(const m of S.res)list.push({y:m.y,f:()=>{shadow(m.x,m.y,22);sprite(IMGS[typeImg(m.r.code)],m.x,m.y,74,m.face<0,Math.abs(Math.sin(m.hop))*7)}});
+  if(S.pending){const f=S.pending.f;list.push({y:f.y,f:()=>{shadow(f.x,f.y,22);if(S.pending.ear==="up"&&!S.pending.coatImg){const fr=Math.sin(f.hop)>0?"luolou-hop-b":"luolou-hop-a";sprite(IMGS[fr],f.x,f.y+(fr==="luolou-hop-b"?-12:0),74,f.x>P.x,0)}else sprite(IMGS[S.pending.spr],f.x,f.y,62,P.face<0,Math.abs(Math.sin(f.hop))*6)}})}
+  list.push({y:P.y,f:()=>{shadow(P.x,P.y,22);let n="player-front",fl=false,b=0;if(P.dir==="side"){n=P.moving&&Math.sin(P.step*1.4)>0?"player-side-b":"player-side-a";fl=P.face<0;b=P.moving?Math.abs(Math.sin(P.step*1.4))*2:0}else{n=P.dir==="up"?"player-back":"player-front";b=P.moving?Math.abs(Math.sin(P.step*1.4))*5:Math.sin(S.t*2)*1}const im=IMGS[n];if(!im.naturalWidth)return;const w=96,sc=w/300;ctx.save();ctx.translate(P.x,P.y-b);if(fl)ctx.scale(-1,1);ctx.drawImage(im,-150*sc,-280*sc,w,w);ctx.restore()}});
+  list.sort((a,b)=>a.y-b.y).forEach(o=>o.f());
+  pill(960,215,"娃娃机","#E8505B","#fff");pill(690,425,"鉴定机","#FFC93C","#3B2A22");
+  if(S.builds.length<BUILD_AT.length)pill(1330,645,"待建草地","#FFFBF3","#3B2A22");
+  for(const f of floats){ctx.globalAlpha=1-f.t/1.6;pill(f.x,f.y-f.t*30,f.txt,"#FFFBF3","#3B2A22");ctx.globalAlpha=1}
+}
+
+/* 夹娃娃 */
+const C={x:800,y:110,open:.55,state:"idle",prizes:[],held:null,dir:0,slip:false,msg:"",msgT:0,g:0};
+const RAIL=[220,1300],TOPY=70,CHUTE=1515,CS=.95,TIP=172*.95;
+function newPrize(){
+  const r=Math.random();let p;
+  if(r<.62){const l=pick(LUO);p={kind:"luo",img:l[0],ear:l[1],coat:l[2],w:185}}
+  else if(r<.78)p={kind:"wood",img:"res-wood",w:170};else if(r<.9)p={kind:"sprout",img:"res-sprout",w:150};else p={kind:"coin",img:"res-coin",w:120};
+  for(let i=0;i<30;i++){p.x=260+Math.random()*1040;if(C.prizes.every(q=>Math.abs(q.x-p.x)>175))break}
+  p.y=790+Math.random()*50;p.fy=p.y;p.vy=0;p.wig=Math.random()*6;return p;
+}
+function fillPrizes(){while(C.prizes.length<6)C.prizes.push(newPrize())}
+const clawCtl={
+  l:()=>{C.dir=-1;setTimeout(()=>{if(C.dir===-1)C.dir=0},180)},
+  r:()=>{C.dir=1;setTimeout(()=>{if(C.dir===1)C.dir=0},180)},
+  drop:()=>{if(C.state==="idle"){C.state="drop";C.dir=0}},
+};
+function enterClaw(){
+  if(S.coins<1){if(!S.res.length){S.coins=1;syncHud();toast("机器吐出一枚安慰币，再试一次")}else{toast("娃娃币不够了，等漏漏干活攒一会儿");return}}
+  S.coins--;syncHud();S.mode="claw";$("#modeName").textContent="娃娃机";$("#help").textContent="← → 移动抓爪 · 空格下爪";
+  fillPrizes();Object.assign(C,{x:800,y:TOPY,open:.55,state:"idle",held:null,dir:0,msg:"",slip:false});
+  actKey="";act.innerHTML=`<button class="btn ghost" data-k="l" aria-label="向左">◀</button><button class="btn red" data-k="drop">下爪</button><button class="btn ghost" data-k="r" aria-label="向右">▶</button>`;
+  stage.focus({preventScroll:true});
+}
+function goIsland(){S.mode="island";$("#modeName").textContent="小岛";$("#help").textContent="点地面走过去 · 方向键 / WASD 移动 · E 互动";actKey="";act.innerHTML="";hidePanel()}
+function prizeTop(p){return p.y-p.w*.85}
+function updateClaw(dt){
+  if(C.state==="idle"){
+    let d=C.dir;if(keys.has("ArrowLeft")||keys.has("a"))d=-1;if(keys.has("ArrowRight")||keys.has("d"))d=1;
+    if(drag!==null)C.x+=(drag-C.x)*Math.min(1,dt*10);else C.x+=d*420*dt;C.x=Math.max(RAIL[0],Math.min(RAIL[1],C.x));
+  }else if(C.state==="drop"){
+    const under=C.prizes.filter(p=>Math.abs(p.x-C.x)<p.w*.42).sort((a,b)=>prizeTop(a)-prizeTop(b))[0];
+    const hh=under?(under.kind==="luo"?under.w*.9:under.w*.8):0;const stop=under?under.y-hh*.45-TIP:840-TIP;C.y+=520*dt;
+    if(C.y>=stop){C.y=stop;C.state="close";C.target=under;C.ct=0}
+  }else if(C.state==="close"){
+    C.ct+=dt;C.open=Math.max(.1,.55-C.ct*1.2);
+    if(C.ct>.45){const p=C.target;
+      if(p){const off=Math.abs(p.x-C.x)/p.w;const chance=off<.2?.92:.6;
+        C.held=p;C.slip=Math.random()>chance;C.prizes.splice(C.prizes.indexOf(p),1);
+        if(p.kind==="luo"){C.g=Math.floor(Math.random()*GRAB.length);C.msg=`它${GRAB[C.g][0]}`;C.msgT=2.2}}
+      C.state="lift"}
+  }else if(C.state==="lift"){
+    C.y-=340*dt;
+    if(C.held&&C.slip&&C.y<520){const p=C.held;p.vy=0;p.dropping=true;C.prizes.push(p);C.held=null;C.msg="差一点！滑走了";C.msgT=1.6;C.open=.4}
+    if(C.y<=TOPY){C.y=TOPY;C.state=C.held?"carry":"fail";C.ft=0}
+  }else if(C.state==="carry"){
+    C.x+=Math.sign(CHUTE-C.x)*480*dt;if(Math.abs(CHUTE-C.x)<8){C.x=CHUTE;C.state="release";C.rt=0}
+  }else if(C.state==="release"){
+    C.rt+=dt;C.open=Math.min(.55,.1+C.rt*1.5);if(C.held){C.held.fall=(C.held.fall||0)+dt}
+    if(C.rt>1.1){C.state="result";clawResult(C.held);C.held=null}
+  }else if(C.state==="fail"){
+    C.ft+=dt;C.open=Math.min(.55,C.open+dt);if(C.ft>.9){C.state="result";clawFail()}
+  }
+  for(const p of C.prizes){p.wig+=dt;if(p.dropping){p.vy+=1800*dt;p.y+=p.vy*dt;if(p.y>=p.fy){p.y=p.fy;if(p.vy>300){p.vy=-p.vy*.3}else{p.dropping=false;p.vy=0}}}}
+  if(C.msgT>0)C.msgT-=dt;
+}
+function clawFail(){
+  showPanel(`<div class="pbox"><h3>空爪了</h3><p class="meta">爪子什么都没抓住，漏漏们看了你一眼。</p><div class="row"><button class="btn red" data-p="again">再夹一把 · 1 娃娃币</button><button class="btn ghost" data-p="home">回到岛上</button></div></div>`);
+}
+function clawResult(p){
+  if(p.kind==="luo"){
+    const a=Math.floor(Math.random()*AFTER.length);
+    S.pending={spr:p.img,coatImg:p.img.startsWith("cast-coat"),ear:p.ear,coat:p.coat,g:C.g,a,f:{x:SPOT.claw[0]+40,y:SPOT.claw[1]+20,hop:0}};
+    showPanel(`<div class="pbox"><h3>夹到一只漏漏！</h3><img class="big" src="a/${p.img}.webp" alt=""><div class="meta"><span>${p.coat} · ${EARS[p.ear].n}</span><span>被夹时：${GRAB[C.g][0]}</span><span>掉出来后：${AFTER[a][0]}</span></div><div class="row"><button class="btn red" data-p="tobooth">带它去鉴定机</button></div></div>`);
+  }else{
+    if(p.kind==="wood")S.wood+=3;else if(p.kind==="sprout")S.sprout+=2;else S.coins+=3;syncHud();
+    showPanel(`<div class="pbox"><img class="big" style="width:120px" src="a/${p.img}.webp" alt=""><h3>${p.kind==="wood"?"木头 +3":p.kind==="sprout"?"花苗 +2":"娃娃币 +3"}</h3><p class="meta">攒够 3 木头 + 1 花苗，就能在待建草地上盖东西。</p><div class="row"><button class="btn red" data-p="again">再夹一把 · 1 娃娃币</button><button class="btn ghost" data-p="home">回到岛上</button></div></div>`);
+  }
+}
+panel.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const k=b.dataset.p;
+  if(k==="again"){hidePanel();if(S.pending){toast("先把手上这只带去鉴定");goIsland();return}S.mode="island";enterClaw()}
+  else if(k==="home"){goIsland()}
+  else if(k==="tobooth"){goIsland();P.x=SPOT.claw[0];P.y=SPOT.claw[1]+10;P.target=[SPOT.booth[0],SPOT.booth[1]];P.auto="booth";toast("它跟在你后面了")}
+  else if(k==="settle"){settle()}
+  else if(k==="save"){saveCard(panel.querySelector(".card"),curRep,toast)}
+  else if(k==="copy"){copyShare(curRep,toast)}
+  else if(k==="close"){hidePanel()}
+});
+function drawWood(x,y,w){const s=w/150;ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.lineWidth=5;ctx.strokeStyle="#3B2A22";
+  for(const[dx,dy]of[[-30,-18],[30,-18],[0,-58]]){ctx.fillStyle="#C98A4B";ctx.beginPath();ctx.roundRect(dx-70,dy-20,120,40,18);ctx.fill();ctx.stroke();ctx.fillStyle="#F2CF94";ctx.beginPath();ctx.ellipse(dx+50,dy,16,20,0,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.strokeStyle="#C98A4B";ctx.beginPath();ctx.ellipse(dx+50,dy,7,9,0,0,Math.PI*2);ctx.stroke();ctx.strokeStyle="#3B2A22"}
+  ctx.fillStyle="#7BC47F";ctx.fillRect(-12,-80,14,84);ctx.strokeRect(-12,-80,14,84);ctx.restore()}
+function drawPrize(p,x,y,rot){
+  ctx.save();if(p.fall){ctx.globalAlpha=Math.max(0,1-p.fall*1.2);y+=p.fall*p.fall*700}
+  shadow(x,p.held?860:y,p.w*.32);
+  if(p.kind==="luo")sprite(IMGS[p.img],x,y,p.w,false,0,rot);else{const im=IMGS[p.img];const s=p.w/260;ctx.save();ctx.translate(x,y);if(rot)ctx.rotate(rot);ctx.drawImage(im,-150*s,-280*s,300*s,300*s);ctx.restore()}
+  ctx.restore()}
+function drawClawHead(x,y,open){
+  ctx.save();ctx.translate(x,y);ctx.scale(1.5,1.5);ctx.lineWidth=5;ctx.strokeStyle="#3B2A22";
+  for(const s of[-1,1]){ctx.save();ctx.rotate(s*open);ctx.fillStyle="#E9B949";ctx.beginPath();ctx.moveTo(s*8,8);ctx.quadraticCurveTo(s*46,40,s*30,92);ctx.lineTo(s*16,96);ctx.quadraticCurveTo(s*28,46,s*-4,16);ctx.closePath();ctx.fill();ctx.stroke();ctx.restore()}
+  ctx.fillStyle="#F4C74E";ctx.beginPath();ctx.roundRect(-34,-18,68,36,10);ctx.fill();ctx.stroke();
+  ctx.fillStyle="#A9B3B8";ctx.beginPath();ctx.arc(0,0,9,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.restore()}
+function clawCam(){const f=fitCam(1672,941);if(W/H>1.2)return f;const s=Math.min(H*.8/941,W/700);const tx=Math.max(RAIL[0],Math.min(CHUTE,C.x));let ox=W/2-tx*s;ox=Math.min(0,Math.max(W-1672*s,ox));return{s,ox,oy:10}}
+function drawClaw(){
+  const f=clawCam();ctx.setTransform(DPR,0,0,DPR,0,0);ctx.fillStyle="#F3A0A8";ctx.fillRect(0,0,W,H);
+  ctx.setTransform(DPR*f.s,0,0,DPR*f.s,f.ox*DPR,f.oy*DPR);cam={s:f.s,x:-f.ox/f.s,y:-f.oy/f.s};
+  ctx.drawImage(IMGS["cabinet-world"],0,0,1672,941);
+  if(C.state==="idle"){ctx.strokeStyle="rgba(232,80,91,.55)";ctx.setLineDash([10,10]);ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(C.x,TOPY+180);ctx.lineTo(C.x,860);ctx.stroke();ctx.setLineDash([])}
+  [...C.prizes].sort((a,b)=>a.y-b.y).forEach(p=>drawPrize(p,p.x,p.y,p.kind==="luo"&&C.state==="idle"?Math.sin(p.wig*2)*.03:0));
+  ctx.fillStyle="#F4C74E";ctx.strokeStyle="#3B2A22";ctx.lineWidth=4;ctx.beginPath();ctx.roundRect(C.x-40,26,80,30,8);ctx.fill();ctx.stroke();
+  ctx.strokeStyle="#6F6A66";ctx.lineWidth=6;ctx.beginPath();ctx.moveTo(C.x,56);ctx.lineTo(C.x,C.y);ctx.stroke();
+  if(C.held){const p=C.held;let rot=0;if(p.kind==="luo"&&C.g===1)rot=Math.sin(S.t*14)*.35;if(p.kind==="luo"&&C.g===3)rot=Math.sin(S.t*8)*.15;drawPrize(p,C.x,C.y+TIP+(p.kind==="luo"?p.w*.9:p.w*.8)*.5,rot)}
+  {const im=IMGS[C.open>.3?"claw-open":"claw-closed"];ctx.drawImage(im,C.x-150*CS,C.y-20*CS,300*CS,300*CS)}
+  if(C.msgT>0){ctx.globalAlpha=Math.min(1,C.msgT*2);pill(C.x+(C.x>1100?-170:170),C.y+120,C.msg,"#FFFBF3","#3B2A22");ctx.globalAlpha=1}
+}
+let drag=null;
+
+/* 鉴定机（游戏内） */
+let curRep=null,shooting=false;
+function enterBooth(){S.mode="booth";$("#modeName").textContent="鉴定机";$("#help").textContent="让它坐好，按快门";actKey="";act.innerHTML=`<button class="btn red" data-k="shoot">按快门</button>`;shooting=false}
+function shoot(){
+  if(shooting)return;shooting=true;act.innerHTML="";const fl=$("#flash");fl.classList.remove("on");void fl.offsetWidth;fl.classList.add("on");
+  const pd=S.pending;curRep=makeReport(pd.spr,pd.ear,pd.coat,pd.g,pd.a);addDex(curRep);
+  const f=fitCam(1536,1024);const pp=$("#paper");pp.style.left=(f.ox+1000*f.s)+"px";pp.style.top=(f.oy+590*f.s)+"px";pp.style.width=(160*f.s)+"px";
+  setTimeout(()=>pp.classList.add("on"),500);
+  setTimeout(()=>{pp.classList.remove("on");showRep();fillAI(curRep,()=>{if(panel.classList.contains("on"))showRep()})},1700);
+}
+function showRep(){
+  const r=curRep;const[name,place]=TYPES[r.code];
+  showPanel(`<div class="pbox wide">${cardHTML(r)}<div><h3>${esc(name)}</h3><p class="meta" style="margin-top:8px">它适合去「${esc(place)}」。安顿到岛上以后，它会自己找活干，${r.code[1]==="干"?"干得勤，还会顺手搬木头":"偶尔摸鱼，但也会攒币"}。</p><div class="row" style="justify-content:flex-start"><button class="btn red" data-p="settle">安顿到岛上</button><button class="btn ghost" data-p="save">保存报告卡</button><button class="btn ghost" data-p="copy">复制分享文案</button></div></div></div>`);
+}
+function settle(){const r=curRep;addResident(r);S.pending=null;goIsland();P.x=SPOT.booth[0];P.y=SPOT.booth[1];toast(`${TYPES[r.code][0]}搬进了岛上`)}
+function drawBooth(){
+  const f=fitCam(1536,1024);ctx.setTransform(DPR,0,0,DPR,0,0);ctx.fillStyle="#E9B949";ctx.fillRect(0,0,W,H);
+  ctx.setTransform(DPR*f.s,0,0,DPR*f.s,f.ox*DPR,f.oy*DPR);ctx.drawImage(IMGS["studio-world"],0,0,1536,1024);
+  if(S.pending){const b=shooting?0:Math.abs(Math.sin(S.t*3))*6;const k=sitImg(S.pending.ear)==="luolou-on-stool"&&!S.pending.coatImg;sprite(IMGS[k?"luolou-on-stool":S.pending.spr],455,k?690:672,k?290:300,false,b)}
+}
+
+/* 主循环 */
+let last=performance.now(),visible=true;
+new IntersectionObserver(es=>{visible=es[0].isIntersecting}).observe(stage);
+function frame(now){
+  const dt=Math.min(.05,(now-last)/1000);last=now;
+  if(visible&&loaded>=need.length&&W>0){S.t+=dt;
+    if(S.mode==="island"){updateIsland(dt);drawIsland()}
+    else if(S.mode==="claw"){updateClaw(dt);drawClaw()}
+    else{updateRes(dt);drawBooth()}
+  }else if(visible&&W>0){ctx.setTransform(DPR,0,0,DPR,0,0);ctx.fillStyle="#F6C3C8";ctx.fillRect(0,0,W,H);ctx.fillStyle="#3B2A22";ctx.font="18px sans-serif";ctx.textAlign="center";ctx.fillText("小岛加载中…",W/2,H/2)}
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+/* 输入 */
+stage.addEventListener("keydown",e=>{const k=e.key.length===1?e.key.toLowerCase():e.key;
+  if(["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"," "].includes(e.key))e.preventDefault();
+  if(panel.classList.contains("on"))return;
+  keys.add(k);
+  if(k==="e"&&S.mode==="island"){const s=nearSpot();if(s)interact(s)}
+  if(k===" "&&S.mode==="claw")clawCtl.drop();
+  if((k===" "||k==="e")&&S.mode==="booth")shoot();
+});
+stage.addEventListener("keyup",e=>{keys.delete(e.key.length===1?e.key.toLowerCase():e.key)});
+stage.addEventListener("blur",()=>keys.clear());
+cv.addEventListener("pointerdown",e=>{
+  stage.focus({preventScroll:true});const r=cv.getBoundingClientRect();const sx=e.clientX-r.left,sy=e.clientY-r.top;
+  if(S.mode==="island"){const[x,y]=toImg(sx,sy);
+    const hit=S.res.find(m=>Math.hypot(m.x-x,m.y-35-y)<40);
+    if(hit){curRep=hit.r;showPanel(`<div class="pbox wide">${cardHTML(hit.r)}<div><h3>${esc(TYPES[hit.r.code][0])}</h3><p class="meta" style="margin-top:8px">正在「${esc(TYPES[hit.r.code][1])}」。</p><div class="row" style="justify-content:flex-start"><button class="btn ghost" data-p="save">保存报告卡</button><button class="btn ghost" data-p="copy">复制分享文案</button><button class="btn red" data-p="close">好的</button></div></div></div>`);return}
+    if(inPoly(MACH,x,y)){P.target=SPOT.claw.slice();P.auto="claw";return}
+    if(inPoly(BOOTH,x,y)){P.target=SPOT.booth.slice();P.auto="booth";return}
+    if(Math.hypot(x-SPOT.build[0],y-SPOT.build[1])<60){P.target=SPOT.build.slice();P.auto="build";return}
+    P.target=[x,y];P.auto=null;
+  }else if(S.mode==="claw"&&C.state==="idle"){const f=clawCam();const x=(sx-f.ox)/f.s;if(sy<H*.85){drag=x;cv.setPointerCapture(e.pointerId)}}
+  else if(S.mode==="booth")shoot();
+});
+cv.addEventListener("pointermove",e=>{if(drag===null)return;const r=cv.getBoundingClientRect();const f=clawCam();drag=(e.clientX-r.left-f.ox)/f.s});
+cv.addEventListener("pointerup",()=>{if(drag!==null){C.x=Math.max(RAIL[0],Math.min(RAIL[1],drag));drag=null;if(S.mode==="claw")clawCtl.drop()}});
+syncHud();
+
+
+
+
+}
+</script>
+</body>
+</html>
